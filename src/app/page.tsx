@@ -41,24 +41,24 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <header className="border-b border-card-border">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-xl sm:text-2xl font-bold">
               <span className="text-accent-green">Invest</span>Plan10
             </h1>
-            <p className="text-sm text-muted mt-1">
+            <p className="text-xs sm:text-sm text-muted mt-1">
               AI-powered 10-year investment strategy
             </p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-muted">
+          <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
             <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
             Powered by Gemini
           </div>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left: Form */}
           <div className="lg:col-span-4">
             <div className="bg-card border border-card-border rounded-2xl p-6 sticky top-8">
@@ -74,8 +74,8 @@ export default function Home() {
           <div className="lg:col-span-8 space-y-6">
             {/* Empty state */}
             {!plan && !loading && !error && (
-              <div className="bg-card border border-card-border rounded-2xl p-12 text-center">
-                <div className="text-6xl mb-4">💰</div>
+              <div className="bg-card border border-card-border rounded-2xl p-8 sm:p-12 text-center">
+                <div className="text-5xl sm:text-6xl mb-4">💰</div>
                 <h2 className="text-xl font-bold mb-2">
                   Ready to plan your future?
                 </h2>
