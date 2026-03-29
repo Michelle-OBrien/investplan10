@@ -2,8 +2,36 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { UserInput, AssetRecommendation } from "@/lib/types";
 import { generateProjections } from "@/lib/projections";
+import { checkRateLimit } from "@/lib/rateLimit";
+
+// 5 requests per minute per IP
+const RATE_LIMIT = { limit: 5, windowMs: 60_000 };
 
 export async function POST(req: NextRequest) {
+  // Rate limiting
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+    req.headers.get("x-real-ip") ??
+    "anonymous";
+
+  const { allowed, remaining, resetIn } = checkRateLimit(ip, RATE_LIMIT);
+
+  if (!allowed) {
+    return NextResponse.json(
+      {
+        error: `Too many requests. Please wait ${Math.ceil(resetIn / 1000)}s before trying again.`,
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil(resetIn / 1000)),
+          "X-RateLimit-Limit": String(RATE_LIMIT.limit),
+          "X-RateLimit-Remaining": "0",
+        },
+      }
+    );
+  }
+
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ error: "GEMINI_API_KEY not configured" }, { status: 500 });
