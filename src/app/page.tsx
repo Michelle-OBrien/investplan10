@@ -17,15 +17,23 @@ import { useToast } from "@/components/Toaster";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 import { encodeInput, decodeInput } from "@/lib/shareUrl";
+import { useKeyboardShortcuts } from "@/lib/useKeyboardShortcuts";
+import KeyboardShortcutsHelp from "@/components/KeyboardShortcutsHelp";
 
 export default function Home() {
   const { t } = useI18n();
   const toast = useToast();
+  const [showShortcuts, setShowShortcuts] = useState(false);
   const [plan, setPlan] = useState<InvestmentPlan | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [historyKey, setHistoryKey] = useState(0);
   const [lastInput, setLastInput] = useState<UserInput | null>(null);
+
+  useKeyboardShortcuts([
+    { key: "n", handler: () => { setPlan(null); setError(null); } },
+    { key: "?", handler: () => setShowShortcuts((s) => !s) },
+  ]);
 
   const handleRestore = (saved: SavedPlan) => {
     setPlan(saved.plan);
@@ -265,6 +273,10 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {showShortcuts && (
+        <KeyboardShortcutsHelp onClose={() => setShowShortcuts(false)} />
+      )}
     </main>
   );
 }
