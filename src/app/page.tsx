@@ -14,6 +14,7 @@ import LoadingSkeleton from "@/components/LoadingSkeleton";
 import LocaleToggle from "@/components/LocaleToggle";
 import { useI18n } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toaster";
+import OnboardingModal from "@/components/OnboardingModal";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 import { encodeInput, decodeInput } from "@/lib/shareUrl";
@@ -251,6 +252,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <OnboardingModal />
 
       <footer className="border-t border-card-border mt-16 no-print">
         <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
