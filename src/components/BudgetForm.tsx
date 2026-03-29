@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { UserInput } from "@/lib/types";
+
+const RiskQuiz = dynamic(() => import("./RiskQuiz"), { ssr: false });
 
 interface Props {
   onSubmit: (input: UserInput) => void;
@@ -12,6 +15,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
   const [budget, setBudget] = useState(5000);
   const [monthly, setMonthly] = useState(300);
   const [risk, setRisk] = useState<UserInput["riskTolerance"]>("moderate");
+  const [showQuiz, setShowQuiz] = useState(false);
   const [stocks, setStocks] = useState(50);
   const [crypto, setCrypto] = useState(30);
   const [forex, setForex] = useState(20);
@@ -62,11 +66,28 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
         />
       </div>
 
+      {/* Risk Quiz modal */}
+      {showQuiz && (
+        <RiskQuiz
+          onResult={(r) => { setRisk(r); setShowQuiz(false); }}
+          onClose={() => setShowQuiz(false)}
+        />
+      )}
+
       {/* Risk tolerance */}
       <div>
-        <label className="block text-sm font-medium text-muted mb-2">
-          Risk Tolerance
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-sm font-medium text-muted">
+            Risk Tolerance
+          </label>
+          <button
+            type="button"
+            onClick={() => setShowQuiz(true)}
+            className="text-xs text-accent-green hover:underline cursor-pointer"
+          >
+            Not sure?
+          </button>
+        </div>
         <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
           {(["conservative", "moderate", "aggressive"] as const).map((r) => (
             <button
