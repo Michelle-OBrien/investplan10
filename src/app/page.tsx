@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import BudgetForm from "@/components/BudgetForm";
 import ProjectionChart from "@/components/ProjectionChart";
 import AssetList from "@/components/AssetList";
@@ -15,6 +16,7 @@ import { useI18n } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toaster";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
+import { encodeInput, decodeInput } from "@/lib/shareUrl";
 
 export default function Home() {
   const { t } = useI18n();
@@ -167,6 +169,18 @@ export default function Home() {
               <>
                 {/* Action buttons */}
                 <div className="flex justify-end gap-2 animate-fade-in-up no-print">
+                  {lastInput && (
+                    <button
+                      onClick={() => {
+                        const url = `${window.location.origin}/?${encodeInput(lastInput)}`;
+                        navigator.clipboard.writeText(url);
+                        toast("Link copied to clipboard!", "success");
+                      }}
+                      className="text-sm text-muted hover:text-accent-purple border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-accent-purple/30"
+                    >
+                      Share
+                    </button>
+                  )}
                   <button
                     onClick={() => window.print()}
                     className="text-sm text-muted hover:text-accent-blue border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-accent-blue/30"
