@@ -5,12 +5,20 @@ import BudgetForm from "@/components/BudgetForm";
 import ProjectionChart from "@/components/ProjectionChart";
 import AssetList from "@/components/AssetList";
 import StatsCards from "@/components/StatsCards";
+import PlanHistory from "@/components/PlanHistory";
 import { UserInput, InvestmentPlan } from "@/lib/types";
+import { savePlan, SavedPlan } from "@/lib/history";
 
 export default function Home() {
   const [plan, setPlan] = useState<InvestmentPlan | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [historyKey, setHistoryKey] = useState(0);
+
+  const handleRestore = (saved: SavedPlan) => {
+    setPlan(saved.plan);
+    setError(null);
+  };
 
   const handleSubmit = async (input: UserInput) => {
     setLoading(true);
@@ -31,6 +39,8 @@ export default function Home() {
 
       const data: InvestmentPlan = await res.json();
       setPlan(data);
+      savePlan(input, data);
+      setHistoryKey((k) => k + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -68,6 +78,7 @@ export default function Home() {
               </p>
               <BudgetForm onSubmit={handleSubmit} loading={loading} />
             </div>
+            <PlanHistory key={historyKey} onRestore={handleRestore} />
           </div>
 
           {/* Right: Results */}
