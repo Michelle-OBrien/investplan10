@@ -8,6 +8,7 @@ import AssetList from "@/components/AssetList";
 import StatsCards from "@/components/StatsCards";
 import PlanHistory from "@/components/PlanHistory";
 import UserMenu from "@/components/UserMenu";
+import ThemeToggle from "@/components/ThemeToggle";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 
@@ -73,6 +74,7 @@ export default function Home() {
               <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
               Powered by Gemini
             </div>
+            <ThemeToggle />
             <UserMenu />
           </div>
         </div>
