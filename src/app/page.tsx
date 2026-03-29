@@ -18,6 +18,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [historyKey, setHistoryKey] = useState(0);
+  const [lastInput, setLastInput] = useState<UserInput | null>(null);
 
   const handleRestore = (saved: SavedPlan) => {
     setPlan(saved.plan);
@@ -28,6 +29,7 @@ export default function Home() {
     setLoading(true);
     setError(null);
     setPlan(null);
+    setLastInput(input);
 
     try {
       const res = await fetch("/api/generate-plan", {
@@ -114,11 +116,33 @@ export default function Home() {
 
             {/* Error state */}
             {error && (
-              <div className="bg-accent-red/10 border border-accent-red/30 rounded-2xl p-6 text-center">
-                <p className="text-accent-red font-medium">{error}</p>
-                <p className="text-xs text-muted mt-2">
-                  Make sure your GEMINI_API_KEY is configured in .env.local
+              <div className="bg-accent-red/10 border border-accent-red/30 rounded-2xl p-6 sm:p-8 text-center animate-fade-in-up">
+                <div className="text-4xl mb-3">⚠️</div>
+                <p className="text-accent-red font-semibold mb-1">{error}</p>
+                <p className="text-xs text-muted mb-5">
+                  {error.toLowerCase().includes("api key")
+                    ? "Make sure your GEMINI_API_KEY is set in .env.local"
+                    : error.toLowerCase().includes("network") || error.toLowerCase().includes("fetch")
+                    ? "Check your internet connection and try again"
+                    : "Gemini may be temporarily unavailable — try again in a moment"}
                 </p>
+                <div className="flex items-center justify-center gap-3">
+                  {lastInput && (
+                    <button
+                      onClick={() => handleSubmit(lastInput)}
+                      disabled={loading}
+                      className="px-5 py-2.5 rounded-xl text-sm font-bold bg-accent-green text-background hover:brightness-110 transition cursor-pointer disabled:opacity-50"
+                    >
+                      Retry
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setError(null)}
+                    className="px-5 py-2.5 rounded-xl text-sm border border-card-border text-muted hover:text-foreground hover:border-foreground/30 transition cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
               </div>
             )}
 
