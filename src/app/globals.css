@@ -90,25 +90,69 @@ html:not([data-theme]) body {
   opacity: 0;
 }
 
+/* Print / PDF export styles */
 @media print {
   body {
-    background: white !important;
-    color: black !important;
+    background: #fff !important;
+    color: #111 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
   .no-print {
     display: none !important;
   }
+
   .print-only {
     display: block !important;
   }
-  .bg-card {
-    background: #f8f8f8 !important;
-    border-color: #ddd !important;
+
+  header,
+  footer {
+    display: none !important;
   }
+
   .animate-fade-in-up {
     animation: none !important;
     opacity: 1 !important;
+  }
+
+  .glow-green,
+  .glow-blue,
+  .glow-purple {
+    box-shadow: none !important;
+  }
+
+  /* Force readable card styles */
+  [class*="bg-card"] {
+    background: #f9f9f9 !important;
+    border-color: #ddd !important;
+  }
+
+  [class*="text-muted"] {
+    color: #555 !important;
+  }
+
+  [class*="text-foreground"] {
+    color: #111 !important;
+  }
+
+  /* Prevent page breaks inside cards */
+  .bg-card {
+    break-inside: avoid;
+  }
+
+  /* Layout: single column for print */
+  .lg\:col-span-4 {
+    display: none !important;
+  }
+
+  .lg\:col-span-8 {
+    grid-column: 1 / -1 !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+    size: A4;
   }
 }
