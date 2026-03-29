@@ -15,6 +15,7 @@ import LocaleToggle from "@/components/LocaleToggle";
 import { useI18n } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toaster";
 import OnboardingModal from "@/components/OnboardingModal";
+import ContributionsChart from "@/components/ContributionsChart";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 import { encodeInput, decodeInput } from "@/lib/shareUrl";
@@ -223,6 +224,15 @@ export default function Home() {
                       {t("growthProjection")}
                     </h2>
                     <ProjectionChart projections={plan.projections} />
+                  </div>
+                </div>
+
+                <div className="animate-fade-in-up" style={{ animationDelay: "0.32s" }}>
+                  <div className="bg-card border border-card-border rounded-2xl p-6">
+                    <h2 className="text-lg font-bold mb-4">
+                      Capital vs Gains Breakdown
+                    </h2>
+                    <ContributionsChart projections={plan.projections} />
                   </div>
                 </div>
 
