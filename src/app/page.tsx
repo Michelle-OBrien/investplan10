@@ -73,6 +73,12 @@ export default function Home() {
             >
               Dashboard
             </Link>
+            <Link
+              href="/compare"
+              className="hidden sm:block text-xs text-muted hover:text-foreground border border-card-border rounded-lg px-3 py-1.5 transition hover:border-foreground/30"
+            >
+              Compare
+            </Link>
             <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
               Powered by Gemini
