@@ -10,10 +10,13 @@ import PlanHistory from "@/components/PlanHistory";
 import UserMenu from "@/components/UserMenu";
 import ThemeToggle from "@/components/ThemeToggle";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
+import LocaleToggle from "@/components/LocaleToggle";
+import { useI18n } from "@/lib/i18n/context";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 
 export default function Home() {
+  const { t } = useI18n();
   const [plan, setPlan] = useState<InvestmentPlan | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -63,7 +66,7 @@ export default function Home() {
               <span className="text-accent-green">Invest</span>Plan10
             </h1>
             <p className="text-xs sm:text-sm text-muted mt-1">
-              AI-powered 10-year investment strategy
+              {t("tagline")}
             </p>
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
@@ -81,8 +84,9 @@ export default function Home() {
             </Link>
             <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
-              Powered by Gemini
+              {t("poweredBy")}
             </div>
+            <LocaleToggle />
             <ThemeToggle />
             <UserMenu />
           </div>
@@ -94,9 +98,9 @@ export default function Home() {
           {/* Left: Form */}
           <div className="lg:col-span-4 no-print">
             <div className="bg-card border border-card-border rounded-2xl p-6 sticky top-8">
-              <h2 className="text-lg font-bold mb-1">Your Budget</h2>
+              <h2 className="text-lg font-bold mb-1">{t("yourBudget")}</h2>
               <p className="text-xs text-muted mb-6">
-                Set your parameters and let AI build your plan
+                {t("formSubtitle")}
               </p>
               <BudgetForm onSubmit={handleSubmit} loading={loading} />
             </div>
@@ -110,12 +114,10 @@ export default function Home() {
               <div className="bg-card border border-card-border rounded-2xl p-8 sm:p-12 text-center">
                 <div className="text-5xl sm:text-6xl mb-4">💰</div>
                 <h2 className="text-xl font-bold mb-2">
-                  Ready to plan your future?
+                  {t("readyTitle")}
                 </h2>
                 <p className="text-muted text-sm max-w-md mx-auto">
-                  Enter your budget, choose your risk level and allocation, then
-                  hit generate. Our AI will create a personalized 10-year
-                  investment plan with specific assets to buy.
+                  {t("readyDesc")}
                 </p>
               </div>
             )}
@@ -170,14 +172,14 @@ export default function Home() {
                     onClick={() => { setPlan(null); setError(null); }}
                     className="text-sm text-muted hover:text-foreground border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-foreground/30"
                   >
-                    New plan
+                    {t("newPlan")}
                   </button>
                 </div>
 
                 <div className="animate-fade-in-up" style={{ animationDelay: "0.05s" }}>
                   <div className="bg-card border border-card-border rounded-2xl p-6">
                     <h2 className="text-lg font-bold mb-2">
-                      Investment Strategy
+                      {t("investmentStrategy")}
                     </h2>
                     <p className="text-sm text-muted">{plan.summary}</p>
                   </div>
@@ -190,7 +192,7 @@ export default function Home() {
                 <div className="animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
                   <div className="bg-card border border-card-border rounded-2xl p-6">
                     <h2 className="text-lg font-bold mb-4">
-                      10-Year Growth Projection
+                      {t("growthProjection")}
                     </h2>
                     <ProjectionChart projections={plan.projections} />
                   </div>
@@ -199,7 +201,7 @@ export default function Home() {
                 <div className="animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
                   <div className="bg-card border border-accent-green/30 rounded-2xl p-6 glow-green">
                     <h2 className="text-lg font-bold mb-2 text-accent-green">
-                      Compound Interest Strategy
+                      {t("compoundStrategy")}
                     </h2>
                     <p className="text-sm text-muted">{plan.compoundDetails}</p>
                   </div>
@@ -208,16 +210,14 @@ export default function Home() {
                 <div className="animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
                   <div className="bg-card border border-card-border rounded-2xl p-6">
                     <h2 className="text-lg font-bold mb-4">
-                      Recommended Assets
+                      {t("recommendedAssets")}
                     </h2>
                     <AssetList assets={plan.assets} />
                   </div>
                 </div>
 
                 <p className="text-xs text-muted/50 text-center py-4 animate-fade-in-up" style={{ animationDelay: "0.55s" }}>
-                  Disclaimer: This is a simulation for educational purposes only.
-                  Past performance does not guarantee future results. Always
-                  consult a financial advisor before investing.
+                  {t("disclaimer")}
                 </p>
               </>
             )}
