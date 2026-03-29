@@ -70,3 +70,26 @@ body {
   animation: fadeInUp 0.5s ease-out forwards;
   opacity: 0;
 }
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .bg-card {
+    background: #f8f8f8 !important;
+    border-color: #ddd !important;
+  }
+  .animate-fade-in-up {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
