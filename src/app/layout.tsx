@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { I18nProvider } from "@/lib/i18n/context";
+import { ToastProvider } from "@/components/Toaster";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -64,7 +65,9 @@ export default function RootLayout({
             __html: `(function(){var t=localStorage.getItem("theme")||"dark";document.documentElement.setAttribute("data-theme",t)})()`,
           }}
         />
-        <I18nProvider>{children}</I18nProvider>
+        <I18nProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </I18nProvider>
       </body>
     </html>
   );
