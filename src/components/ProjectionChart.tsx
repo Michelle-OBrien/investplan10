@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   AreaChart,
   Area,
@@ -11,6 +12,7 @@ import {
   Legend,
 } from "recharts";
 import { YearProjection } from "@/lib/types";
+import { adjustForInflation, DEFAULT_INFLATION } from "@/lib/inflation";
 
 interface Props {
   projections: YearProjection[];
@@ -23,10 +25,35 @@ function formatCurrency(value: number): string {
 }
 
 export default function ProjectionChart({ projections }: Props) {
+  const [inflationAdj, setInflationAdj] = useState(false);
+
+  const data = inflationAdj
+    ? adjustForInflation(projections)
+    : projections;
+
   return (
+    <div>
+      {/* Toggle */}
+      <div className="flex items-center justify-end gap-2 mb-3">
+        <span className="text-xs text-muted">
+          Inflation-adjusted ({(DEFAULT_INFLATION * 100).toFixed(0)}% p.a.)
+        </span>
+        <button
+          onClick={() => setInflationAdj(!inflationAdj)}
+          className={`relative w-10 h-5 rounded-full transition-colors cursor-pointer ${
+            inflationAdj ? "bg-accent-green" : "bg-card-border"
+          }`}
+        >
+          <span
+            className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
+              inflationAdj ? "translate-x-5" : "translate-x-0.5"
+            }`}
+          />
+        </button>
+      </div>
     <div className="w-full h-[280px] sm:h-[400px]">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={projections} margin={{ top: 10, right: 5, left: -10, bottom: 0 }}>
+        <AreaChart data={data} margin={{ top: 10, right: 5, left: -10, bottom: 0 }}>
           <defs>
             <linearGradient id="gradStocks" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
@@ -96,6 +123,7 @@ export default function ProjectionChart({ projections }: Props) {
           />
         </AreaChart>
       </ResponsiveContainer>
+    </div>
     </div>
   );
 }
