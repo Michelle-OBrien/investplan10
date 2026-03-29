@@ -51,7 +51,7 @@ export default function ProjectionChart({ projections }: Props) {
           />
         </button>
       </div>
-    <div className="w-full h-[280px] sm:h-[400px]">
+    <div className="w-full h-[280px] sm:h-[400px]" role="img" aria-label="Area chart showing 10-year growth projection for stocks, crypto, and forex allocations">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 10, right: 5, left: -10, bottom: 0 }}>
           <defs>
