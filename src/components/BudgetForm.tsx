@@ -8,6 +8,13 @@ interface Props {
   loading: boolean;
 }
 
+const PRESETS = [
+  { label: "Safe", stocks: 70, crypto: 10, forex: 20 },
+  { label: "Balanced", stocks: 50, crypto: 30, forex: 20 },
+  { label: "Growth", stocks: 30, crypto: 50, forex: 20 },
+  { label: "Crypto-heavy", stocks: 20, crypto: 60, forex: 20 },
+];
+
 export default function BudgetForm({ onSubmit, loading }: Props) {
   const [budget, setBudget] = useState(5000);
   const [monthly, setMonthly] = useState(300);
@@ -15,6 +22,12 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
   const [stocks, setStocks] = useState(50);
   const [crypto, setCrypto] = useState(30);
   const [forex, setForex] = useState(20);
+
+  const applyPreset = (p: (typeof PRESETS)[number]) => {
+    setStocks(p.stocks);
+    setCrypto(p.crypto);
+    setForex(p.forex);
+  };
 
   const total = stocks + crypto + forex;
   const isValid = total === 100 && budget > 0;
@@ -91,12 +104,28 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
 
       {/* Allocation sliders */}
       <div>
-        <label className="block text-sm font-medium text-muted mb-3">
+        <label className="block text-sm font-medium text-muted mb-2">
           Asset Allocation{" "}
           <span className={total === 100 ? "text-accent-green" : "text-accent-red"}>
             ({total}%)
           </span>
         </label>
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {PRESETS.map((p) => (
+            <button
+              key={p.label}
+              type="button"
+              onClick={() => applyPreset(p)}
+              className={`text-xs px-2.5 py-1 rounded-md border transition ${
+                stocks === p.stocks && crypto === p.crypto && forex === p.forex
+                  ? "border-accent-green bg-accent-green/10 text-accent-green"
+                  : "border-card-border text-muted hover:border-foreground/30"
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
         <div className="space-y-3">
           <div>
             <div className="flex justify-between text-sm mb-1">
