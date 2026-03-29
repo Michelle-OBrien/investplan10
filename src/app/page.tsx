@@ -133,37 +133,57 @@ export default function Home() {
             {/* Results */}
             {plan && (
               <>
-                <div className="bg-card border border-card-border rounded-2xl p-6">
-                  <h2 className="text-lg font-bold mb-2">
-                    Investment Strategy
-                  </h2>
-                  <p className="text-sm text-muted">{plan.summary}</p>
+                {/* Reset button */}
+                <div className="flex justify-end animate-fade-in-up">
+                  <button
+                    onClick={() => { setPlan(null); setError(null); }}
+                    className="text-sm text-muted hover:text-foreground border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-foreground/30"
+                  >
+                    New plan
+                  </button>
                 </div>
 
-                <StatsCards plan={plan} />
-
-                <div className="bg-card border border-card-border rounded-2xl p-6">
-                  <h2 className="text-lg font-bold mb-4">
-                    10-Year Growth Projection
-                  </h2>
-                  <ProjectionChart projections={plan.projections} />
+                <div className="animate-fade-in-up" style={{ animationDelay: "0.05s" }}>
+                  <div className="bg-card border border-card-border rounded-2xl p-6">
+                    <h2 className="text-lg font-bold mb-2">
+                      Investment Strategy
+                    </h2>
+                    <p className="text-sm text-muted">{plan.summary}</p>
+                  </div>
                 </div>
 
-                <div className="bg-card border border-accent-green/30 rounded-2xl p-6 glow-green">
-                  <h2 className="text-lg font-bold mb-2 text-accent-green">
-                    Compound Interest Strategy
-                  </h2>
-                  <p className="text-sm text-muted">{plan.compoundDetails}</p>
+                <div className="animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
+                  <StatsCards plan={plan} />
                 </div>
 
-                <div className="bg-card border border-card-border rounded-2xl p-6">
-                  <h2 className="text-lg font-bold mb-4">
-                    Recommended Assets
-                  </h2>
-                  <AssetList assets={plan.assets} />
+                <div className="animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
+                  <div className="bg-card border border-card-border rounded-2xl p-6">
+                    <h2 className="text-lg font-bold mb-4">
+                      10-Year Growth Projection
+                    </h2>
+                    <ProjectionChart projections={plan.projections} />
+                  </div>
                 </div>
 
-                <p className="text-xs text-muted/50 text-center py-4">
+                <div className="animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
+                  <div className="bg-card border border-accent-green/30 rounded-2xl p-6 glow-green">
+                    <h2 className="text-lg font-bold mb-2 text-accent-green">
+                      Compound Interest Strategy
+                    </h2>
+                    <p className="text-sm text-muted">{plan.compoundDetails}</p>
+                  </div>
+                </div>
+
+                <div className="animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
+                  <div className="bg-card border border-card-border rounded-2xl p-6">
+                    <h2 className="text-lg font-bold mb-4">
+                      Recommended Assets
+                    </h2>
+                    <AssetList assets={plan.assets} />
+                  </div>
+                </div>
+
+                <p className="text-xs text-muted/50 text-center py-4 animate-fade-in-up" style={{ animationDelay: "0.55s" }}>
                   Disclaimer: This is a simulation for educational purposes only.
                   Past performance does not guarantee future results. Always
                   consult a financial advisor before investing.
