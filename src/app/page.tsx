@@ -193,6 +193,28 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <footer className="border-t border-card-border mt-16">
+        <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-muted">
+            <span className="font-bold text-foreground">
+              <span className="text-accent-green">Invest</span>Plan10
+            </span>
+            {" "}&mdash; Master IMT&E, Universit&eacute; Panth&eacute;on-Sorbonne
+          </div>
+          <div className="flex items-center gap-4 text-xs text-muted">
+            <a
+              href="https://github.com/Michelle-OBrien/investplan10"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition"
+            >
+              GitHub
+            </a>
+            <span>Next.js + Tailwind + Gemini</span>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
