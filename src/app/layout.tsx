@@ -13,8 +13,38 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InvestPlan10 — Smart Investment Planner",
-  description: "Plan your 10-year investment strategy across stocks, crypto, and forex with AI-powered recommendations.",
+  title: "InvestPlan10 — AI-Powered 10-Year Investment Planner",
+  description:
+    "Plan your 10-year investment strategy across stocks, crypto, and forex with AI-powered recommendations. Built with Next.js and Gemini.",
+  keywords: [
+    "investment planner",
+    "10 year plan",
+    "stocks",
+    "crypto",
+    "forex",
+    "AI finance",
+    "portfolio allocation",
+    "compound interest",
+  ],
+  authors: [{ name: "Michelle O'Brien" }],
+  openGraph: {
+    title: "InvestPlan10 — AI-Powered 10-Year Investment Planner",
+    description:
+      "Generate a personalized 10-year investment plan with specific asset recommendations using Gemini AI.",
+    type: "website",
+    locale: "en_US",
+    siteName: "InvestPlan10",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "InvestPlan10 — AI-Powered 10-Year Investment Planner",
+    description:
+      "Generate a personalized 10-year investment plan with specific asset recommendations using Gemini AI.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
