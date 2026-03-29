@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import BudgetForm from "@/components/BudgetForm";
 import ProjectionChart from "@/components/ProjectionChart";
 import AssetList from "@/components/AssetList";
@@ -60,9 +61,17 @@ export default function Home() {
               AI-powered 10-year investment strategy
             </p>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
-            <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
-            Powered by Gemini
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              href="/dashboard"
+              className="text-xs text-muted hover:text-foreground border border-card-border rounded-lg px-3 py-1.5 transition hover:border-foreground/30"
+            >
+              Dashboard
+            </Link>
+            <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
+              <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
+              Powered by Gemini
+            </div>
           </div>
         </div>
       </header>
