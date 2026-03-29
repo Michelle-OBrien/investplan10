@@ -39,14 +39,14 @@ export default function StatsCards({ plan }: Props) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
       {stats.map((s) => (
         <div
           key={s.label}
-          className="bg-card border border-card-border rounded-xl p-4 text-center"
+          className="bg-card border border-card-border rounded-xl p-3 sm:p-4 text-center"
         >
           <p className="text-xs text-muted uppercase tracking-wider mb-1">{s.label}</p>
-          <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+          <p className={`text-xl sm:text-2xl font-bold ${s.color}`}>{s.value}</p>
           <p className="text-xs text-muted mt-1">{s.sub}</p>
         </div>
       ))}

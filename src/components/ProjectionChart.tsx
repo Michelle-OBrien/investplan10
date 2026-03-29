@@ -24,9 +24,9 @@ function formatCurrency(value: number): string {
 
 export default function ProjectionChart({ projections }: Props) {
   return (
-    <div className="w-full h-[400px]">
+    <div className="w-full h-[280px] sm:h-[400px]">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={projections} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+        <AreaChart data={projections} margin={{ top: 10, right: 5, left: -10, bottom: 0 }}>
           <defs>
             <linearGradient id="gradStocks" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
@@ -46,13 +46,13 @@ export default function ProjectionChart({ projections }: Props) {
             dataKey="year"
             stroke="#888"
             tickFormatter={(y) => `Y${y}`}
-            fontSize={12}
+            fontSize={11}
           />
           <YAxis
             stroke="#888"
             tickFormatter={formatCurrency}
-            fontSize={12}
-            width={65}
+            fontSize={11}
+            width={55}
           />
           <Tooltip
             contentStyle={{
