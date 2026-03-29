@@ -12,11 +12,13 @@ import ThemeToggle from "@/components/ThemeToggle";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import LocaleToggle from "@/components/LocaleToggle";
 import { useI18n } from "@/lib/i18n/context";
+import { useToast } from "@/components/Toaster";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 
 export default function Home() {
   const { t } = useI18n();
+  const toast = useToast();
   const [plan, setPlan] = useState<InvestmentPlan | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,8 +52,11 @@ export default function Home() {
       setPlan(data);
       savePlan(input, data);
       setHistoryKey((k) => k + 1);
+      toast("Plan generated successfully!", "success");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      const msg = err instanceof Error ? err.message : "Something went wrong";
+      setError(msg);
+      toast(msg, "error");
     } finally {
       setLoading(false);
     }
