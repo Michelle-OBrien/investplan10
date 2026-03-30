@@ -18,6 +18,7 @@ import ContributionsChart from "@/components/ContributionsChart";
 import AllocationPieChart from "@/components/AllocationPieChart";
 import MilestonesTimeline from "@/components/MilestonesTimeline";
 import MonteCarloChart from "@/components/MonteCarloChart";
+import GeminiLoadingScreen from "@/components/GeminiLoadingScreen";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 import { encodeInput, decodeInput } from "@/lib/shareUrl";
@@ -114,6 +115,7 @@ export default function Home() {
       </header>
 
       <div id="content" className="max-w-6xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        {loading && <GeminiLoadingScreen />}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left: Form */}
           <div className="lg:col-span-4 no-print">
