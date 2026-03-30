@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0a0a0a"/>
+  <text x="256" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="160" font-weight="bold" fill="#00d4aa">IP</text>
+  <text x="256" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="#ededed">10</text>
+  <line x1="100" y1="380" x2="412" y2="380" stroke="#00d4aa" stroke-width="6" stroke-linecap="round"/>
+  <polyline points="120,440 200,410 280,425 360,395 400,405" fill="none" stroke="#3b82f6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
