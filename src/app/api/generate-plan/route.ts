@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   const input: UserInput = await req.json();
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
 
   const prompt = `You are a financial advisor AI. A user wants to invest with the following parameters:
 - Initial budget: ${input.budget}€
