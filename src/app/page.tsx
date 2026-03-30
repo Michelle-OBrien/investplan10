@@ -23,6 +23,7 @@ import { savePlan, SavedPlan } from "@/lib/history";
 import { encodeInput, decodeInput } from "@/lib/shareUrl";
 import { useKeyboardShortcuts } from "@/lib/useKeyboardShortcuts";
 import KeyboardShortcutsHelp from "@/components/KeyboardShortcutsHelp";
+import { exportToPdf } from "@/lib/exportPdf";
 
 export default function Home() {
   const { t } = useI18n();
@@ -194,7 +195,15 @@ export default function Home() {
                     </button>
                   )}
                   <button
-                    onClick={() => window.print()}
+                    onClick={async () => {
+                      toast("Generating PDF...", "info");
+                      try {
+                        await exportToPdf("plan-results");
+                        toast("PDF downloaded!", "success");
+                      } catch {
+                        toast("Failed to generate PDF", "error");
+                      }
+                    }}
                     className="text-sm text-muted hover:text-accent-blue border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-accent-blue/30"
                   >
                     Export PDF
@@ -207,6 +216,7 @@ export default function Home() {
                   </button>
                 </div>
 
+                <div id="plan-results" className="space-y-6">
                 <div className="animate-fade-in-up" style={{ animationDelay: "0.05s" }}>
                   <div className="bg-card border border-card-border rounded-2xl p-6">
                     <h2 className="text-lg font-bold mb-2">
@@ -299,6 +309,8 @@ export default function Home() {
                     <AssetList assets={plan.assets} />
                   </div>
                 </div>
+
+                </div>{/* end plan-results */}
 
                 <p className="text-xs text-muted/50 text-center py-4 animate-fade-in-up" style={{ animationDelay: "0.55s" }}>
                   {t("disclaimer")}
