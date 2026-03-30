@@ -23,18 +23,48 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
   const [monthly, setMonthly] = useState(300);
   const [risk, setRisk] = useState<UserInput["riskTolerance"]>("moderate");
   const [showQuiz, setShowQuiz] = useState(false);
-  const [stocks, setStocks] = useState(50);
-  const [crypto, setCrypto] = useState(30);
-  const [forex, setForex] = useState(20);
+  const [alloc, setAlloc] = useState({ stocks: 50, crypto: 30, forex: 20 });
 
-  const applyPreset = (p: (typeof PRESETS)[number]) => {
-    setStocks(p.stocks);
-    setCrypto(p.crypto);
-    setForex(p.forex);
+  const updateAlloc = (
+    changed: keyof typeof alloc,
+    value: number
+  ) => {
+    const clamped = Math.min(100, Math.max(0, value));
+    const remaining = 100 - clamped;
+    const others = (["stocks", "crypto", "forex"] as const).filter((k) => k !== changed);
+    const otherSum = alloc[others[0]] + alloc[others[1]];
+
+    let newAlloc: typeof alloc;
+    if (otherSum === 0) {
+      // Split remaining equally between the other two
+      newAlloc = {
+        ...alloc,
+        [changed]: clamped,
+        [others[0]]: Math.round(remaining / 2),
+        [others[1]]: remaining - Math.round(remaining / 2),
+      };
+    } else {
+      // Distribute remaining proportionally
+      const ratio0 = alloc[others[0]] / otherSum;
+      const val0 = Math.round(remaining * ratio0);
+      const val1 = remaining - val0;
+      newAlloc = {
+        ...alloc,
+        [changed]: clamped,
+        [others[0]]: val0,
+        [others[1]]: val1,
+      };
+    }
+    setAlloc(newAlloc);
   };
 
-  const total = stocks + crypto + forex;
-  const isValid = total === 100 && budget > 0;
+  const applyPreset = (p: (typeof PRESETS)[number]) => {
+    setAlloc({ stocks: p.stocks, crypto: p.crypto, forex: p.forex });
+  };
+
+  const { stocks, crypto, forex } = alloc;
+  const total = stocks + crypto + forex; // Always 100
+  const isValid = budget > 0;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,52 +185,56 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
         <div className="space-y-3">
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-accent-blue">Stocks</span>
+              <label htmlFor="slider-stocks" className="text-accent-blue">Stocks</label>
               <span className="font-bold">{stocks}%</span>
             </div>
             <input
+              id="slider-stocks"
               type="range"
               min={0}
               max={100}
               value={stocks}
-              onChange={(e) => setStocks(Number(e.target.value))}
+              onChange={(e) => updateAlloc("stocks", Number(e.target.value))}
+              aria-valuenow={stocks}
+              aria-label={`Stocks allocation: ${stocks}%`}
               className="w-full accent-accent-blue"
             />
           </div>
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-accent-purple">Crypto</span>
+              <label htmlFor="slider-crypto" className="text-accent-purple">Crypto</label>
               <span className="font-bold">{crypto}%</span>
             </div>
             <input
+              id="slider-crypto"
               type="range"
               min={0}
               max={100}
               value={crypto}
-              onChange={(e) => setCrypto(Number(e.target.value))}
+              onChange={(e) => updateAlloc("crypto", Number(e.target.value))}
+              aria-valuenow={crypto}
+              aria-label={`Crypto allocation: ${crypto}%`}
               className="w-full accent-accent-purple"
             />
           </div>
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-accent-orange">Forex</span>
+              <label htmlFor="slider-forex" className="text-accent-orange">Forex</label>
               <span className="font-bold">{forex}%</span>
             </div>
             <input
+              id="slider-forex"
               type="range"
               min={0}
               max={100}
               value={forex}
-              onChange={(e) => setForex(Number(e.target.value))}
+              onChange={(e) => updateAlloc("forex", Number(e.target.value))}
+              aria-valuenow={forex}
+              aria-label={`Forex allocation: ${forex}%`}
               className="w-full accent-accent-orange"
             />
           </div>
         </div>
-        {total !== 100 && (
-          <p className="text-accent-red text-xs mt-2">
-            Allocations must sum to 100% (currently {total}%)
-          </p>
-        )}
       </div>
 
       {/* Allocation visual bar */}
