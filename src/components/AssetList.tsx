@@ -49,6 +49,17 @@ export default function AssetList({ assets }: Props) {
                     <p className="text-xs text-muted/70 mt-1 line-clamp-1">
                       {asset.reason}
                     </p>
+                    {asset.riskScore != null && (
+                      <span className="inline-flex items-center gap-1 mt-1 text-[10px] uppercase tracking-wider font-semibold rounded-full px-2 py-1 border border-opacity-50"
+                        style={{
+                          color: asset.riskScore >= 70 ? "#b91c1c" : asset.riskScore >= 40 ? "#b45309" : "#16a34a",
+                          borderColor: asset.riskScore >= 70 ? "#fca5a5" : asset.riskScore >= 40 ? "#fcd34d" : "#86efac",
+                          backgroundColor: asset.riskScore >= 70 ? "#fee2e2" : asset.riskScore >= 40 ? "#fef3c7" : "#dcfce7",
+                        }}
+                      >
+                        Risk: {asset.riskScore}%
+                      </span>
+                    )}
                   </div>
                   <div className={`text-right ml-3 font-bold text-sm ${style.color}`}>
                     {asset.allocation}%

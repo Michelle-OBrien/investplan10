@@ -38,7 +38,14 @@ cp .env.example .env.local
 # Edit .env.local and add your key from https://aistudio.google.com/apikey
 ```
 
-4. Run the development server:
+4. Configure Finnhub API key (risk score data):
+```bash
+# in .env.local
+FINNHUB_API_KEY=your_finnhub_key_here
+```
+Get a free key at https://finnhub.io/signup (free tier 60 calls/min).
+
+5. Run the development server:
 ```bash
 npm run dev
 ```

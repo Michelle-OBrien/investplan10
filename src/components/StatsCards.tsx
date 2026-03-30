@@ -17,6 +17,9 @@ function formatMoney(n: number): string {
 export default function StatsCards({ plan }: Props) {
   const profit = plan.projectedValue - plan.totalInvested;
 
+  const riskScore = plan.averageRiskScore ?? 0;
+  const riskColor = riskScore >= 70 ? "text-accent-red" : riskScore >= 40 ? "text-accent-orange" : "text-accent-green";
+
   const stats = [
     {
       label: "Total Invested",
@@ -35,6 +38,12 @@ export default function StatsCards({ plan }: Props) {
       value: formatMoney(profit),
       color: profit >= 0 ? "text-accent-green" : "text-accent-red",
       sub: `${plan.totalReturn >= 0 ? "+" : ""}${plan.totalReturn}% return`,
+    },
+    {
+      label: "Average Risk",
+      value: `${riskScore}%`,
+      color: riskColor,
+      sub: "based on selected assets",
     },
   ];
 

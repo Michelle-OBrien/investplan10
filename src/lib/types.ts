@@ -13,6 +13,7 @@ export interface AssetRecommendation {
   category: "stock" | "crypto" | "forex";
   allocation: number;
   reason: string;
+  riskScore?: number;
 }
 
 export interface YearProjection {
@@ -32,4 +33,5 @@ export interface InvestmentPlan {
   projectedValue: number;
   totalReturn: number;
   compoundDetails: string;
+  averageRiskScore?: number;
 }

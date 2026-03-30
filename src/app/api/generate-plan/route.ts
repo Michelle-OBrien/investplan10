@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { UserInput, AssetRecommendation } from "@/lib/types";
 import { generateProjections } from "@/lib/projections";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { getAssetRiskScore } from "@/lib/riskScore";
 
 // 5 requests per minute per IP
 const RATE_LIMIT = { limit: 5, windowMs: 60_000 };
@@ -77,9 +78,29 @@ Recommend 3-5 stocks, 2-3 crypto, and 2-3 forex pairs. Be specific with real tic
     const projections = generateProjections(input);
     const finalProjection = projections[projections.length - 1];
 
+    const enrichedAssets = await Promise.all(
+      (aiResponse.assets as AssetRecommendation[]).map(async (asset) => {
+        const riskScore = await getAssetRiskScore(asset);
+        return {
+          ...asset,
+          riskScore,
+        };
+      })
+    );
+
+    const averageRiskScore =
+      enrichedAssets.length > 0
+        ? Number(
+            (
+              enrichedAssets.reduce((sum, asset) => sum + (asset.riskScore ?? 0), 0) /
+              enrichedAssets.length
+            ).toFixed(0)
+          )
+        : 0;
+
     const plan = {
       summary: aiResponse.summary,
-      assets: aiResponse.assets as AssetRecommendation[],
+      assets: enrichedAssets,
       projections,
       totalInvested: finalProjection.contributions,
       projectedValue: finalProjection.totalValue,
@@ -89,6 +110,7 @@ Recommend 3-5 stocks, 2-3 crypto, and 2-3 forex pairs. Be specific with real tic
           100
       ),
       compoundDetails: aiResponse.compoundDetails,
+      averageRiskScore,
     };
 
     return NextResponse.json(plan);
