@@ -33,8 +33,8 @@ export default function Home() {
   const [lastInput, setLastInput] = useState<UserInput | null>(null);
 
   useKeyboardShortcuts([
-    { key: "n", handler: () => { setPlan(null); setError(null); } },
-    { key: "?", handler: () => setShowShortcuts((s) => !s) },
+    { key: "n", description: "New plan", handler: () => { setPlan(null); setError(null); } },
+    { key: "?", description: "Show shortcuts", handler: () => setShowShortcuts((s) => !s) },
   ]);
 
   const handleRestore = (saved: SavedPlan) => {
