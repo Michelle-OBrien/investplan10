@@ -15,6 +15,9 @@ import { useI18n } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toaster";
 import OnboardingModal from "@/components/OnboardingModal";
 import ContributionsChart from "@/components/ContributionsChart";
+import AllocationPieChart from "@/components/AllocationPieChart";
+import MilestonesTimeline from "@/components/MilestonesTimeline";
+import MonteCarloChart from "@/components/MonteCarloChart";
 import { UserInput, InvestmentPlan } from "@/lib/types";
 import { savePlan, SavedPlan } from "@/lib/history";
 import { encodeInput, decodeInput } from "@/lib/shareUrl";
@@ -217,6 +220,22 @@ export default function Home() {
                   <StatsCards plan={plan} />
                 </div>
 
+                {lastInput && (
+                  <div className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+                    <div className="bg-card border border-card-border rounded-2xl p-6">
+                      <h2 className="text-lg font-bold mb-4">
+                        Portfolio Allocation
+                      </h2>
+                      <AllocationPieChart
+                        assets={plan.assets}
+                        stocksPct={lastInput.allocationStocks}
+                        cryptoPct={lastInput.allocationCrypto}
+                        forexPct={lastInput.allocationForex}
+                      />
+                    </div>
+                  </div>
+                )}
+
                 <div className="animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
                   <div className="bg-card border border-card-border rounded-2xl p-6">
                     <h2 className="text-lg font-bold mb-4">
@@ -235,7 +254,35 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
+                {lastInput && (
+                  <div className="animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
+                    <div className="bg-card border border-card-border rounded-2xl p-6">
+                      <h2 className="text-lg font-bold mb-2">
+                        Monte Carlo Simulation
+                      </h2>
+                      <p className="text-xs text-muted mb-4">
+                        {`${200} random scenarios based on your risk profile — showing best, median, and worst outcomes`}
+                      </p>
+                      <MonteCarloChart input={lastInput} />
+                    </div>
+                  </div>
+                )}
+
+                {lastInput && (
+                  <div className="animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
+                    <div className="bg-card border border-card-border rounded-2xl p-6">
+                      <h2 className="text-lg font-bold mb-4">
+                        Investment Milestones
+                      </h2>
+                      <MilestonesTimeline
+                        projections={plan.projections}
+                        monthlyContribution={lastInput.monthlyContribution}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
                   <div className="bg-card border border-accent-green/30 rounded-2xl p-6 glow-green">
                     <h2 className="text-lg font-bold mb-2 text-accent-green">
                       {t("compoundStrategy")}

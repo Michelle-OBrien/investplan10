@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { UserInput } from "@/lib/types";
+import GoalSelector, { Goal } from "./GoalSelector";
 
 const RiskQuiz = dynamic(() => import("./RiskQuiz"), { ssr: false });
 
@@ -23,6 +24,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
   const [monthly, setMonthly] = useState(300);
   const [risk, setRisk] = useState<UserInput["riskTolerance"]>("moderate");
   const [showQuiz, setShowQuiz] = useState(false);
+  const [selectedGoal, setSelectedGoal] = useState<string | undefined>();
   const [alloc, setAlloc] = useState({ stocks: 50, crypto: 30, forex: 20 });
 
   const updateAlloc = (
@@ -62,6 +64,12 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
     setAlloc({ stocks: p.stocks, crypto: p.crypto, forex: p.forex });
   };
 
+  const handleGoalSelect = (goal: Goal) => {
+    setSelectedGoal(goal.id);
+    setMonthly(goal.suggestedMonthly);
+    setRisk(goal.suggestedRisk);
+  };
+
   const { stocks, crypto, forex } = alloc;
   const total = stocks + crypto + forex; // Always 100
   const isValid = budget > 0;
@@ -81,6 +89,9 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Goal selector */}
+      <GoalSelector onSelect={handleGoalSelect} selectedId={selectedGoal} />
+
       {/* Budget */}
       <div>
         <label htmlFor="budget" className="block text-sm font-medium text-muted mb-2">
