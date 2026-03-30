@@ -8,7 +8,6 @@ import ProjectionChart from "@/components/ProjectionChart";
 import AssetList from "@/components/AssetList";
 import StatsCards from "@/components/StatsCards";
 import PlanHistory from "@/components/PlanHistory";
-import UserMenu from "@/components/UserMenu";
 import ThemeToggle from "@/components/ThemeToggle";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import LocaleToggle from "@/components/LocaleToggle";
@@ -106,7 +105,6 @@ export default function Home() {
             </div>
             <LocaleToggle />
             <ThemeToggle />
-            <UserMenu />
           </div>
         </div>
       </header>
