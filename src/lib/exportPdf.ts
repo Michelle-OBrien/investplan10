@@ -15,18 +15,45 @@ export async function exportToPdf(
 
   // Clone the element to avoid layout shifts during capture.
   const clone = el.cloneNode(true) as HTMLElement;
-  const computedStyle = window.getComputedStyle(el);
   clone.style.width = `${el.scrollWidth}px`;
   clone.style.maxWidth = "none";
   clone.style.boxSizing = "border-box";
-  clone.style.backgroundColor = computedStyle.backgroundColor || "#ffffff";
+  clone.style.backgroundColor = "#ffffff";
+  clone.style.color = "#000000";
+  clone.style.filter = "none";
+  clone.style.transition = "none";
+
+  const enforceStyle = document.createElement("style");
+  enforceStyle.textContent = `
+    #pdf-export-sandbox, #pdf-export-sandbox * {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-color: #cccccc !important;
+      box-shadow: none !important;
+      filter: none !important;
+      text-shadow: none !important;
+    }
+  `;
 
   const wrapper = document.createElement("div");
+  wrapper.id = "pdf-export-sandbox";
   wrapper.style.position = "fixed";
   wrapper.style.top = "-9999px";
   wrapper.style.left = "-9999px";
   wrapper.style.opacity = "0";
   wrapper.style.pointerEvents = "none";
+  wrapper.appendChild(enforceStyle);
+
+  // Force a visual style normalization for all descendants in the cloned DOM.
+  clone.querySelectorAll<HTMLElement>("*").forEach((child) => {
+    child.style.backgroundColor = "#ffffff";
+    child.style.color = "#000000";
+    child.style.borderColor = "#cccccc";
+    child.style.boxShadow = "none";
+    child.style.filter = "none";
+    child.style.textShadow = "none";
+  });
+
   wrapper.appendChild(clone);
   document.body.appendChild(wrapper);
 
@@ -34,7 +61,7 @@ export async function exportToPdf(
     const canvas = await html2canvas(clone, {
       scale: window.devicePixelRatio || 2,
       useCORS: true,
-      backgroundColor: computedStyle.backgroundColor || "#ffffff",
+      backgroundColor: "#ffffff",
       logging: false,
       windowWidth: clone.scrollWidth,
       windowHeight: clone.scrollHeight,
