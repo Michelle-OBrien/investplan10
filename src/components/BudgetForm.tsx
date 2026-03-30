@@ -53,29 +53,33 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Budget */}
       <div>
-        <label className="block text-sm font-medium text-muted mb-2">
+        <label htmlFor="budget" className="block text-sm font-medium text-muted mb-2">
           Initial Budget (€)
         </label>
         <input
+          id="budget"
           type="number"
           min={100}
           value={budget}
           onChange={(e) => setBudget(Number(e.target.value))}
-          className="w-full bg-background border border-card-border rounded-lg px-4 py-3 text-xl font-bold text-accent-green focus:outline-none focus:border-accent-green transition"
+          aria-describedby="budget-desc"
+          className="w-full bg-background border border-card-border rounded-lg px-4 py-3 text-xl font-bold text-accent-green focus:outline-none focus:border-accent-green focus:ring-2 focus:ring-accent-green/30 transition"
         />
+        <span id="budget-desc" className="sr-only">Minimum 100 euros</span>
       </div>
 
       {/* Monthly contribution */}
       <div>
-        <label className="block text-sm font-medium text-muted mb-2">
+        <label htmlFor="monthly" className="block text-sm font-medium text-muted mb-2">
           Monthly Contribution (€)
         </label>
         <input
+          id="monthly"
           type="number"
           min={0}
           value={monthly}
           onChange={(e) => setMonthly(Number(e.target.value))}
-          className="w-full bg-background border border-card-border rounded-lg px-4 py-3 text-lg font-semibold text-foreground focus:outline-none focus:border-accent-blue transition"
+          className="w-full bg-background border border-card-border rounded-lg px-4 py-3 text-lg font-semibold text-foreground focus:outline-none focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 transition"
         />
       </div>
 
@@ -88,11 +92,11 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
       )}
 
       {/* Risk tolerance */}
-      <div>
+      <fieldset>
         <div className="flex items-center justify-between mb-2">
-          <label className="block text-sm font-medium text-muted">
+          <legend className="text-sm font-medium text-muted">
             Risk Tolerance
-          </label>
+          </legend>
           <button
             type="button"
             onClick={() => setShowQuiz(true)}
@@ -101,12 +105,13 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
             Not sure?
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+        <div className="grid grid-cols-3 gap-1.5 sm:gap-2" role="group" aria-label="Risk tolerance selector">
           {(["conservative", "moderate", "aggressive"] as const).map((r) => (
             <button
               key={r}
               type="button"
               onClick={() => setRisk(r)}
+              aria-pressed={risk === r}
               className={`py-2 px-1.5 sm:px-3 rounded-lg border text-xs sm:text-sm font-medium capitalize transition ${
                 risk === r
                   ? r === "conservative"
@@ -121,7 +126,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Allocation sliders */}
       <div>

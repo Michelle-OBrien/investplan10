@@ -75,8 +75,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-background">
-      <header className="border-b border-card-border">
+    <main className="min-h-screen bg-background" role="main">
+      <a href="#content" className="skip-link">Skip to content</a>
+      <header className="border-b border-card-border" role="banner">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex items-center justify-between">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold">
@@ -110,7 +111,7 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+      <div id="content" className="max-w-6xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left: Form */}
           <div className="lg:col-span-4 no-print">
@@ -141,7 +142,7 @@ export default function Home() {
 
             {/* Error state */}
             {error && (
-              <div className="bg-accent-red/10 border border-accent-red/30 rounded-2xl p-6 sm:p-8 text-center animate-fade-in-up">
+              <div role="alert" className="bg-accent-red/10 border border-accent-red/30 rounded-2xl p-6 sm:p-8 text-center animate-fade-in-up">
                 <div className="text-4xl mb-3">⚠️</div>
                 <p className="text-accent-red font-semibold mb-1">{error}</p>
                 <p className="text-xs text-muted mb-5">
