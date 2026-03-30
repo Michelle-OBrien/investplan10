@@ -94,8 +94,9 @@ Recommend 3-5 stocks, 2-3 crypto, and 2-3 forex pairs. Be specific with real tic
     return NextResponse.json(plan);
   } catch (error) {
     console.error("Gemini API error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to generate investment plan. Check your API key." },
+      { error: `Failed to generate plan: ${message}` },
       { status: 500 }
     );
   }
