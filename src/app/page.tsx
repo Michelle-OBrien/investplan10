@@ -35,6 +35,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [historyKey, setHistoryKey] = useState(0);
   const [lastInput, setLastInput] = useState<UserInput | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   useKeyboardShortcuts([
     { key: "n", description: "New plan", handler: () => { setPlan(null); setError(null); } },
@@ -198,17 +199,24 @@ export default function Home() {
                   )}
                   <button
                     onClick={async () => {
+                      if (!plan) return;
+                      setExporting(true);
+                      const fileName = `InvestmentPlan_${new Date().toISOString().slice(0, 10)}.pdf`;
                       toast("Generating PDF...", "info");
                       try {
-                        await exportToPdf("plan-results");
+                        await exportToPdf("plan-results", fileName);
                         toast("PDF downloaded!", "success");
-                      } catch {
+                      } catch (err) {
+                        console.error("PDF export error", err);
                         toast("Failed to generate PDF", "error");
+                      } finally {
+                        setExporting(false);
                       }
                     }}
-                    className="text-sm text-muted hover:text-accent-blue border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-accent-blue/30"
+                    disabled={exporting}
+                    className={`text-sm ${exporting ? "text-muted" : "text-muted hover:text-accent-blue"} border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-accent-blue/30 ${exporting ? "opacity-50 cursor-not-allowed" : ""}`}
                   >
-                    Export PDF
+                    {exporting ? "Generating PDF..." : "Export PDF"}
                   </button>
                   <button
                     onClick={() => { setPlan(null); setError(null); }}
