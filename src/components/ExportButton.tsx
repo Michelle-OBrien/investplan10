@@ -1,13 +1,21 @@
 "use client";
 
+import { exportToPdf } from "@/lib/exportPdf";
+
 export default function ExportButton() {
-  const handlePrint = () => {
-    window.print();
+  const handleExport = async () => {
+    try {
+      await exportToPdf("plan-results");
+      window.alert("PDF downloaded!");
+    } catch (err) {
+      console.error("Export to PDF failed", err);
+      window.alert("PDF export failed. Please try again.");
+    }
   };
 
   return (
     <button
-      onClick={handlePrint}
+      onClick={handleExport}
       className="no-print text-sm text-muted hover:text-foreground border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-foreground/30 flex items-center gap-2"
     >
       <svg

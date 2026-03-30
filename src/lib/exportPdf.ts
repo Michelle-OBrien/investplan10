@@ -9,42 +9,66 @@ export async function exportToPdf(
   filename = "InvestPlan10-report.pdf"
 ): Promise<void> {
   const el = document.getElementById(elementId);
-  if (!el) return;
-
-  // Temporarily make the element full-width for capture
-  const originalMaxW = el.style.maxWidth;
-  el.style.maxWidth = "900px";
-
-  const canvas = await html2canvas(el, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#0a0a0a",
-    logging: false,
-    windowWidth: 900,
-  });
-
-  el.style.maxWidth = originalMaxW;
-
-  const imgData = canvas.toDataURL("image/png");
-  const imgWidth = 210; // A4 width in mm
-  const pageHeight = 297; // A4 height in mm
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  const pdf = new jsPDF("p", "mm", "a4");
-  let heightLeft = imgHeight;
-  let position = 0;
-
-  // First page
-  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
-
-  // Additional pages if content overflows
-  while (heightLeft > 0) {
-    position -= pageHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+  if (!el) {
+    throw new Error(`Element with id "${elementId}" not found`);
   }
 
-  pdf.save(filename);
+  // Clone the element to avoid layout shifts during capture.
+  const clone = el.cloneNode(true) as HTMLElement;
+  const computedStyle = window.getComputedStyle(el);
+  clone.style.width = `${el.scrollWidth}px`;
+  clone.style.maxWidth = "none";
+  clone.style.boxSizing = "border-box";
+  clone.style.backgroundColor = computedStyle.backgroundColor || "#ffffff";
+
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "fixed";
+  wrapper.style.top = "-9999px";
+  wrapper.style.left = "-9999px";
+  wrapper.style.opacity = "0";
+  wrapper.style.pointerEvents = "none";
+  wrapper.appendChild(clone);
+  document.body.appendChild(wrapper);
+
+  try {
+    const canvas = await html2canvas(clone, {
+      scale: window.devicePixelRatio || 2,
+      useCORS: true,
+      backgroundColor: computedStyle.backgroundColor || "#ffffff",
+      logging: false,
+      windowWidth: clone.scrollWidth,
+      windowHeight: clone.scrollHeight,
+      allowTaint: true,
+      imageTimeout: 15000,
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    const imgProps = pdf.getImageProperties(imgData);
+    const imgWidth = pdfWidth;
+    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    while (heightLeft > 0) {
+      position -= pdfHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+
+    pdf.save(filename);
+  } catch (error) {
+    console.error("PDF export failed", error);
+    throw error;
+  } finally {
+    document.body.removeChild(wrapper);
+  }
 }
