@@ -90,6 +90,22 @@ html:not([data-theme]) body {
   opacity: 0;
 }
 
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.25s ease-out forwards;
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .bg-card,
   .border-card-border,

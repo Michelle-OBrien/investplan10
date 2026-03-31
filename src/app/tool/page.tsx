@@ -81,7 +81,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-background" role="main">
+    <main className="min-h-screen bg-background animate-fade-in-up" role="main">
       <a href="#content" className="skip-link">Skip to content</a>
       <header className="border-b border-card-border" role="banner">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex items-center justify-between">

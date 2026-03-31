@@ -18,7 +18,7 @@ export default function DashboardPage() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background animate-fade-in-up">
       <header className="border-b border-card-border">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex items-center justify-between">
           <div>
