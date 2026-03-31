@@ -86,13 +86,12 @@ export default function Home() {
       <header className="border-b border-card-border" role="banner">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
+            <HamburgerMenu />
             <Link href="/" className="text-xl sm:text-2xl font-bold">
               <span className="text-accent-green">Invest</span>Plan10
             </Link>
-            <HamburgerMenu />
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
-            <HamburgerMenu />
             <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
               {t("poweredBy")}
