@@ -151,23 +151,32 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
         </div>
         <div className="grid grid-cols-3 gap-1.5 sm:gap-2" role="group" aria-label="Risk tolerance selector">
           {(["conservative", "moderate", "aggressive"] as const).map((r) => (
-            <button
-              key={r}
-              type="button"
-              onClick={() => setRisk(r)}
-              aria-pressed={risk === r}
-              className={`py-2 px-1.5 sm:px-3 rounded-lg border text-xs sm:text-sm font-medium text-center capitalize transition ${
-                risk === r
-                  ? r === "conservative"
-                    ? "border-accent-blue bg-accent-blue/10 text-accent-blue"
-                    : r === "moderate"
-                    ? "border-accent-purple bg-accent-purple/10 text-accent-purple"
-                    : "border-accent-orange bg-accent-orange/10 text-accent-orange"
-                  : "border-card-border text-muted hover:border-foreground/30"
-              }`}
-            >
-              {r === "conservative" ? "Conservative" : r === "moderate" ? "Moderate" : "Aggressive"}
-            </button>
+            <div key={r} className="group relative">
+              <button
+                type="button"
+                onClick={() => setRisk(r)}
+                aria-pressed={risk === r}
+                className={`w-full py-2 px-1.5 sm:px-3 rounded-lg border text-xs sm:text-sm font-medium text-center capitalize transition ${
+                  risk === r
+                    ? r === "conservative"
+                      ? "border-accent-blue bg-accent-blue/10 text-accent-blue"
+                      : r === "moderate"
+                      ? "border-accent-purple bg-accent-purple/10 text-accent-purple"
+                      : "border-accent-orange bg-accent-orange/10 text-accent-orange"
+                    : "border-card-border text-muted hover:border-foreground/30"
+                }`}
+              >
+                {r === "conservative" ? "Conservative" : r === "moderate" ? "Moderate" : "Aggressive"}
+              </button>
+              {/* Tooltip on hover */}
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-card border border-card-border rounded-lg text-xs text-muted whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none shadow-lg z-10">
+                {r === "conservative"
+                  ? "Lower returns, stable portfolio"
+                  : r === "moderate"
+                  ? "Balanced growth and security"
+                  : "Maximum growth, high volatility"}
+              </span>
+            </div>
           ))}
         </div>
       </fieldset>
@@ -179,24 +188,35 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
         </label>
         <div className="flex flex-wrap gap-1.5 mb-3">
           {PRESETS.map((p) => (
-            <button
-              key={p.label}
-              type="button"
-              onClick={() => applyPreset(p)}
-              className={`text-xs px-2.5 py-1 rounded-md border transition ${
-                stocks === p.stocks && crypto === p.crypto && forex === p.forex
-                  ? "border-accent-green bg-accent-green/10 text-accent-green"
-                  : "border-card-border text-muted hover:border-foreground/30"
-              }`}
-            >
-              {p.label}
-            </button>
+            <div key={p.label} className="group relative">
+              <button
+                type="button"
+                onClick={() => applyPreset(p)}
+                className={`text-xs px-2.5 py-1 rounded-md border transition ${
+                  stocks === p.stocks && crypto === p.crypto && forex === p.forex
+                    ? "border-accent-green bg-accent-green/10 text-accent-green"
+                    : "border-card-border text-muted hover:border-foreground/30"
+                }`}
+              >
+                {p.label}
+              </button>
+              {/* Tooltip on hover */}
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-card border border-card-border rounded-lg text-xs text-muted whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none shadow-lg z-10">
+                {p.label === "Safe"
+                  ? "70% stocks, 10% crypto, 20% forex"
+                  : p.label === "Balanced"
+                  ? "50% stocks, 30% crypto, 20% forex"
+                  : p.label === "Growth"
+                  ? "30% stocks, 50% crypto, 20% forex"
+                  : "20% stocks, 60% crypto, 20% forex"}
+              </span>
+            </div>
           ))}
         </div>
         <div className="space-y-3">
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <label htmlFor="slider-stocks" className="text-accent-blue">Stocks</label>
+              <label htmlFor="slider-stocks" className="text-accent-blue" title="Companies and market funds">Stocks</label>
               <span className="font-bold">{stocks}%</span>
             </div>
             <input
@@ -213,7 +233,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
           </div>
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <label htmlFor="slider-crypto" className="text-accent-purple">Crypto</label>
+              <label htmlFor="slider-crypto" className="text-accent-purple" title="Bitcoin, Ethereum, and other cryptocurrencies">Crypto</label>
               <span className="font-bold">{crypto}%</span>
             </div>
             <input
@@ -230,7 +250,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
           </div>
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <label htmlFor="slider-forex" className="text-accent-orange">Forex</label>
+              <label htmlFor="slider-forex" className="text-accent-orange" title="Foreign currency exchange markets">Forex</label>
               <span className="font-bold">{forex}%</span>
             </div>
             <input
