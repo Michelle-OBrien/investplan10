@@ -23,11 +23,10 @@ export default function HamburgerMenu() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-xs text-muted hover:text-foreground border border-card-border rounded-lg px-3 py-1.5 transition hover:border-foreground/30"
+        className="flex items-center justify-center w-9 h-9 text-muted hover:text-foreground border border-card-border rounded-lg transition hover:border-foreground/30"
         aria-label="Menu"
       >
-        <span className="text-sm">☰</span>
-        Menu
+        <span className="text-lg">☰</span>
       </button>
 
       {isOpen && (

@@ -1,356 +1,79 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import BudgetForm from "@/components/BudgetForm";
-import ProjectionChart from "@/components/ProjectionChart";
-import AssetList from "@/components/AssetList";
-import StatsCards from "@/components/StatsCards";
-import PlanHistory from "@/components/PlanHistory";
-import HamburgerMenu from "@/components/HamburgerMenu";
-import ThemeToggle from "@/components/ThemeToggle";
-import LoadingSkeleton from "@/components/LoadingSkeleton";
-import LocaleToggle from "@/components/LocaleToggle";
-import { useI18n } from "@/lib/i18n/context";
-import { useToast } from "@/components/Toaster";
-import OnboardingModal from "@/components/OnboardingModal";
-import ContributionsChart from "@/components/ContributionsChart";
-import AllocationPieChart from "@/components/AllocationPieChart";
-import MilestonesTimeline from "@/components/MilestonesTimeline";
-import MonteCarloChart from "@/components/MonteCarloChart";
-import GeminiLoadingScreen from "@/components/GeminiLoadingScreen";
-import { UserInput, InvestmentPlan } from "@/lib/types";
-import { savePlan, SavedPlan } from "@/lib/history";
-import { encodeInput, decodeInput } from "@/lib/shareUrl";
-import { useKeyboardShortcuts } from "@/lib/useKeyboardShortcuts";
-import KeyboardShortcutsHelp from "@/components/KeyboardShortcutsHelp";
-import { exportToPdf } from "@/lib/exportPdf";
+import Link from "next/link";
 
-export default function Home() {
-  const { t } = useI18n();
-  const toast = useToast();
-  const [showShortcuts, setShowShortcuts] = useState(false);
-  const [plan, setPlan] = useState<InvestmentPlan | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [historyKey, setHistoryKey] = useState(0);
-  const [lastInput, setLastInput] = useState<UserInput | null>(null);
-  const [exporting, setExporting] = useState(false);
-
-  useKeyboardShortcuts([
-    { key: "n", description: "New plan", handler: () => { setPlan(null); setError(null); } },
-    { key: "?", description: "Show shortcuts", handler: () => setShowShortcuts((s) => !s) },
-  ]);
-
-  const handleRestore = (saved: SavedPlan) => {
-    setPlan(saved.plan);
-    setError(null);
-  };
-
-  const handleSubmit = async (input: UserInput) => {
-    setLoading(true);
-    setError(null);
-    setPlan(null);
-    setLastInput(input);
-
-    try {
-      const res = await fetch("/api/generate-plan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to generate plan");
-      }
-
-      const data: InvestmentPlan = await res.json();
-      setPlan(data);
-      savePlan(input, data);
-      setHistoryKey((k) => k + 1);
-      toast("Plan generated successfully!", "success");
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Something went wrong";
-      setError(msg);
-      toast(msg, "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-background" role="main">
+    <main className="min-h-screen bg-background">
       <a href="#content" className="skip-link">Skip to content</a>
-      <header className="border-b border-card-border" role="banner">
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold">
-              <span className="text-accent-green">Invest</span>Plan10
-            </h1>
-            <p className="text-xs sm:text-sm text-muted mt-1">
-              {t("tagline")}
-            </p>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4">
-            <HamburgerMenu />
-            <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
-              <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
-              {t("poweredBy")}
-            </div>
-            <LocaleToggle />
-            <ThemeToggle />
-          </div>
+
+      <header className="border-b border-card-border py-6">
+        <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
+          <Link href="/" className="text-2xl font-bold">
+            <span className="text-accent-green">Invest</span>Plan10
+          </Link>
+          <Link
+            href="/tool"
+            className="text-sm text-muted border border-card-border rounded-lg px-3 py-1.5 hover:border-foreground/30"
+          >
+            Go to Tool
+          </Link>
         </div>
       </header>
 
-      <div id="content" className="max-w-6xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
-        {loading && <GeminiLoadingScreen />}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-          {/* Left: Form */}
-          <div className="lg:col-span-4 no-print">
-            <div className="bg-card border border-card-border rounded-2xl p-6 sticky top-8">
-              <h2 className="text-lg font-bold mb-1">{t("yourBudget")}</h2>
-              <p className="text-xs text-muted mb-6">
-                {t("formSubtitle")}
-              </p>
-              <BudgetForm onSubmit={handleSubmit} loading={loading} />
+      <section id="content" className="py-20">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <span className="text-accent-green">Invest</span>Plan10
+          </h1>
+          <p className="text-lg text-muted mx-auto max-w-3xl mb-8">
+            Your AI-powered 10-year investment planning assistant for stocks, crypto, and forex.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              href="/tool"
+              className="bg-accent-green text-background px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent-green/90 transition"
+            >
+              Start Planning Now
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-sm border border-card-border px-6 py-4 rounded-lg hover:bg-foreground/5 transition"
+            >
+              View Dashboard
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-card border-y border-card-border py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10">Why InvestPlan10?</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="text-center">
+              <div className="text-4xl mb-3">🤖</div>
+              <h3 className="font-semibold mb-2">AI-driven strategies</h3>
+              <p className="text-muted">Data-backed asset allocation and risk insights.</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-3">📈</div>
+              <h3 className="font-semibold mb-2">10-year projections</h3>
+              <p className="text-muted">Visualize long-term growth with automated charts.</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-3">⚖️</div>
+              <h3 className="font-semibold mb-2">Risk scores included</h3>
+              <p className="text-muted">See asset-level and total risk metrics with API data.</p>
             </div>
           </div>
-
-          {/* Right: Results */}
-          <div className="lg:col-span-8 space-y-6">
-            {/* Empty state */}
-            {!plan && !loading && !error && (
-              <div className="bg-card border border-card-border rounded-2xl p-8 sm:p-12 text-center">
-                <div className="text-5xl sm:text-6xl mb-4">💰</div>
-                <h2 className="text-xl font-bold mb-2">
-                  {t("readyTitle")}
-                </h2>
-                <p className="text-muted text-sm max-w-md mx-auto">
-                  {t("readyDesc")}
-                </p>
-              </div>
-            )}
-
-            {/* Error state */}
-            {error && (
-              <div role="alert" className="bg-accent-red/10 border border-accent-red/30 rounded-2xl p-6 sm:p-8 text-center animate-fade-in-up">
-                <div className="text-4xl mb-3">⚠️</div>
-                <p className="text-accent-red font-semibold mb-1">{error}</p>
-                <p className="text-xs text-muted mb-5">
-                  {error.toLowerCase().includes("api key")
-                    ? "Make sure your GEMINI_API_KEY is set in .env.local"
-                    : error.toLowerCase().includes("network") || error.toLowerCase().includes("fetch")
-                    ? "Check your internet connection and try again"
-                    : "Gemini may be temporarily unavailable — try again in a moment"}
-                </p>
-                <div className="flex items-center justify-center gap-3">
-                  {lastInput && (
-                    <button
-                      onClick={() => handleSubmit(lastInput)}
-                      disabled={loading}
-                      className="px-5 py-2.5 rounded-xl text-sm font-bold bg-accent-green text-background hover:brightness-110 transition cursor-pointer disabled:opacity-50"
-                    >
-                      Retry
-                    </button>
-                  )}
-                  <button
-                    onClick={() => setError(null)}
-                    className="px-5 py-2.5 rounded-xl text-sm border border-card-border text-muted hover:text-foreground hover:border-foreground/30 transition cursor-pointer"
-                  >
-                    Dismiss
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Loading state */}
-            {loading && <LoadingSkeleton />}
-
-            {/* Results */}
-            {plan && (
-              <>
-                {/* Action buttons */}
-                <div className="flex justify-end gap-2 animate-fade-in-up no-print">
-                  {lastInput && (
-                    <button
-                      onClick={() => {
-                        const url = `${window.location.origin}/?${encodeInput(lastInput)}`;
-                        navigator.clipboard.writeText(url);
-                        toast("Link copied to clipboard!", "success");
-                      }}
-                      className="text-sm text-muted hover:text-accent-purple border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-accent-purple/30"
-                    >
-                      Share
-                    </button>
-                  )}
-                  <button
-                    onClick={async () => {
-                      if (!plan) return;
-                      setExporting(true);
-                      const fileName = `InvestmentPlan_${new Date().toISOString().slice(0, 10)}.pdf`;
-                      toast("Generating PDF...", "info");
-                      try {
-                        await exportToPdf("plan-results", fileName);
-                        toast("PDF downloaded!", "success");
-                      } catch (err) {
-                        console.error("PDF export error", err);
-                        toast("Failed to generate PDF", "error");
-                      } finally {
-                        setExporting(false);
-                      }
-                    }}
-                    disabled={exporting}
-                    className={`text-sm ${exporting ? "text-muted" : "text-muted hover:text-accent-blue"} border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-accent-blue/30 ${exporting ? "opacity-50 cursor-not-allowed" : ""}`}
-                  >
-                    {exporting ? "Generating PDF..." : "Export PDF"}
-                  </button>
-                  <button
-                    onClick={() => { setPlan(null); setError(null); }}
-                    className="text-sm text-muted hover:text-foreground border border-card-border rounded-lg px-4 py-2 transition cursor-pointer hover:border-foreground/30"
-                  >
-                    {t("newPlan")}
-                  </button>
-                </div>
-
-                <div id="plan-results" className="space-y-6">
-                <div className="animate-fade-in-up" style={{ animationDelay: "0.05s" }}>
-                  <div className="bg-card border border-card-border rounded-2xl p-6">
-                    <h2 className="text-lg font-bold mb-2">
-                      {t("investmentStrategy")}
-                    </h2>
-                    <p className="text-sm text-muted">{plan.summary}</p>
-                  </div>
-                </div>
-
-                <div className="animate-fade-in-up" style={{ animationDelay: "0.15s" }}>
-                  <StatsCards plan={plan} />
-                </div>
-
-                {lastInput && (
-                  <div className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-                    <div className="bg-card border border-card-border rounded-2xl p-6">
-                      <h2 className="text-lg font-bold mb-4">
-                        Portfolio Allocation
-                      </h2>
-                      <AllocationPieChart
-                        assets={plan.assets}
-                        stocksPct={lastInput.allocationStocks}
-                        cryptoPct={lastInput.allocationCrypto}
-                        forexPct={lastInput.allocationForex}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <div className="animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
-                  <div className="bg-card border border-card-border rounded-2xl p-6">
-                    <h2 className="text-lg font-bold mb-4">
-                      {t("growthProjection")}
-                    </h2>
-                    <ProjectionChart projections={plan.projections} />
-                  </div>
-                </div>
-
-                <div className="animate-fade-in-up" style={{ animationDelay: "0.32s" }}>
-                  <div className="bg-card border border-card-border rounded-2xl p-6">
-                    <h2 className="text-lg font-bold mb-4">
-                      Capital vs Gains Breakdown
-                    </h2>
-                    <ContributionsChart projections={plan.projections} />
-                  </div>
-                </div>
-
-                {lastInput && (
-                  <div className="animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
-                    <div className="bg-card border border-card-border rounded-2xl p-6">
-                      <h2 className="text-lg font-bold mb-2">
-                        Monte Carlo Simulation
-                      </h2>
-                      <p className="text-xs text-muted mb-4">
-                        {`${200} random scenarios based on your risk profile — showing best, median, and worst outcomes`}
-                      </p>
-                      <MonteCarloChart input={lastInput} />
-                    </div>
-                  </div>
-                )}
-
-                {lastInput && (
-                  <div className="animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-                    <div className="bg-card border border-card-border rounded-2xl p-6">
-                      <h2 className="text-lg font-bold mb-4">
-                        Investment Milestones
-                      </h2>
-                      <MilestonesTimeline
-                        projections={plan.projections}
-                        monthlyContribution={lastInput.monthlyContribution}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <div className="animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
-                  <div className="bg-card border border-accent-green/30 rounded-2xl p-6 glow-green">
-                    <h2 className="text-lg font-bold mb-2 text-accent-green">
-                      {t("compoundStrategy")}
-                    </h2>
-                    <p className="text-sm text-muted">{plan.compoundDetails}</p>
-                  </div>
-                </div>
-
-                <div className="animate-fade-in-up" style={{ animationDelay: "0.45s" }}>
-                  <div className="bg-card border border-card-border rounded-2xl p-6">
-                    <h2 className="text-lg font-bold mb-4">
-                      {t("recommendedAssets")}
-                    </h2>
-                    <AssetList assets={plan.assets} />
-                  </div>
-                </div>
-
-                </div>{/* end plan-results */}
-
-                <p className="text-xs text-muted/50 text-center py-4 animate-fade-in-up" style={{ animationDelay: "0.55s" }}>
-                  {t("disclaimer")}
-                </p>
-              </>
-            )}
-          </div>
         </div>
-      </div>
+      </section>
 
-      <OnboardingModal />
-
-      {/* Plan History Section */}
-      <div id="plan-history" className="max-w-6xl mx-auto px-4 py-8">
-        <PlanHistory key={historyKey} onRestore={handleRestore} />
-      </div>
-
-      <footer className="border-t border-card-border mt-16 no-print">
-        <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-muted">
-            <span className="font-bold text-foreground">
-              <span className="text-accent-green">Invest</span>Plan10
-            </span>
-            {" "}&mdash; Master IMT&E, Universit&eacute; Panth&eacute;on-Sorbonne
-          </div>
-          <div className="flex items-center gap-4 text-xs text-muted">
-            <a
-              href="https://github.com/Michelle-OBrien/investplan10"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground transition"
-            >
-              GitHub
-            </a>
-            <span>Next.js + Tailwind + Gemini</span>
-          </div>
+      <footer className="py-10 border-t border-card-border">
+        <div className="max-w-6xl mx-auto px-4 text-center text-sm text-muted">
+          © {new Date().getFullYear()} InvestPlan10 — Built with Next.js and Gemini AI.
         </div>
       </footer>
-
-      {showShortcuts && (
-        <KeyboardShortcutsHelp onClose={() => setShowShortcuts(false)} />
-      )}
     </main>
   );
 }
