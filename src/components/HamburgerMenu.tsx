@@ -35,7 +35,7 @@ export default function HamburgerMenu() {
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 top-full mt-2 w-48 bg-card border border-card-border rounded-lg shadow-lg z-50 py-2 transform translate-x-1/2 sm:-translate-x-0 sm:right-0" style={{ minWidth: "180px" }}>
+          <div className="absolute left-0 top-full mt-2 w-48 max-w-[calc(100vw-1rem)] bg-card border border-card-border rounded-lg shadow-lg z-50 py-2" style={{ minWidth: "180px" }}>
             {menuItems.map((item) => (
               <div key={item.href}>
                 {item.onClick ? (
