@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { UserInput } from "@/lib/types";
+import { useI18n } from "@/lib/i18n/context";
 import GoalSelector, { Goal } from "./GoalSelector";
 
 const RiskQuiz = dynamic(() => import("./RiskQuiz"), { ssr: false });
@@ -87,6 +88,8 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
     });
   };
 
+  const { t } = useI18n();
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Goal selector */}
@@ -95,7 +98,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
       {/* Budget */}
       <div>
         <label htmlFor="budget" className="block text-sm font-medium text-muted mb-2">
-          Initial Budget (€)
+          {t("initialBudget")}
         </label>
         <input
           id="budget"
@@ -112,7 +115,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
       {/* Monthly contribution */}
       <div>
         <label htmlFor="monthly" className="block text-sm font-medium text-muted mb-2">
-          Monthly Contribution (€)
+          {t("monthlyContribution")}
         </label>
         <input
           id="monthly"
@@ -136,14 +139,14 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
       <fieldset>
         <div className="flex items-center justify-between mb-2">
           <legend className="text-sm font-medium text-muted">
-            Risk Tolerance
+            {t("riskTolerance")}
           </legend>
           <button
             type="button"
             onClick={() => setShowQuiz(true)}
             className="text-xs text-accent-green hover:underline cursor-pointer"
           >
-            Not sure?
+            {t("notSure")}
           </button>
         </div>
         <div className="grid grid-cols-3 gap-1.5 sm:gap-2" role="group" aria-label="Risk tolerance selector">
@@ -172,10 +175,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
       {/* Allocation sliders */}
       <div>
         <label className="block text-sm font-medium text-muted mb-2">
-          Asset Allocation{" "}
-          <span className={total === 100 ? "text-accent-green" : "text-accent-red"}>
-            ({total}%)
-          </span>
+          {t("assetAllocation")}
         </label>
         <div className="flex flex-wrap gap-1.5 mb-3">
           {PRESETS.map((p) => (

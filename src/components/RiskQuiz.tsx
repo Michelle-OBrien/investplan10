@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { UserInput } from "@/lib/types";
+import { useI18n } from "@/lib/i18n/context";
 
 interface Props {
   onResult: (risk: UserInput["riskTolerance"]) => void;
@@ -119,7 +120,7 @@ export default function RiskQuiz({ onResult, onClose }: Props) {
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h2 className="font-bold text-sm">Risk Profile Quiz</h2>
+            <h2 className="font-bold text-sm">{t("quizTitle")}</h2>
             {!result && (
               <p className="text-xs text-muted mt-0.5">
                 {step + 1} / {questions.length}

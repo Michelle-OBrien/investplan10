@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { getHistory, deletePlan, SavedPlan } from "@/lib/history";
+import { useI18n } from "@/lib/i18n/context";
 import DashboardStats from "@/components/DashboardStats";
 import DashboardPlanCard from "@/components/DashboardPlanCard";
 
@@ -17,6 +18,8 @@ export default function DashboardPage() {
 
   if (!mounted) return null;
 
+  const { t } = useI18n();
+
   return (
     <main className="min-h-screen bg-background animate-fade-in-up">
       <header className="border-b border-card-border">
@@ -25,13 +28,13 @@ export default function DashboardPage() {
             <h1 className="text-xl sm:text-2xl font-bold">
               <span className="text-accent-green">Invest</span>Plan10
             </h1>
-            <p className="text-xs sm:text-sm text-muted mt-1">Dashboard — My Plans</p>
+            <p className="text-xs sm:text-sm text-muted mt-1">{t("dashboardTitle")}</p>
           </div>
           <Link
             href="/tool"
             className="text-sm border border-card-border rounded-lg px-4 py-2 text-muted hover:text-foreground hover:border-foreground/30 transition"
           >
-            ← New plan
+            ← {t("generatePlan")}
           </Link>
         </div>
       </header>
@@ -40,15 +43,15 @@ export default function DashboardPage() {
         {plans.length === 0 ? (
           <div className="bg-card border border-card-border rounded-2xl p-12 text-center">
             <div className="text-5xl mb-4">📊</div>
-            <h2 className="text-xl font-bold mb-2">No plans yet</h2>
+            <h2 className="text-xl font-bold mb-2">{t("noPlansTitle")}</h2>
             <p className="text-muted text-sm mb-6 max-w-md mx-auto">
-              Generate your first investment plan and it will appear here for review and comparison.
+              {t("noPlansDesc")}
             </p>
             <Link
               href="/tool"
               className="inline-block bg-accent-green text-background font-bold px-6 py-3 rounded-xl hover:brightness-110 transition"
             >
-              Generate a plan
+              {t("generatePlan")}
             </Link>
           </div>
         ) : (

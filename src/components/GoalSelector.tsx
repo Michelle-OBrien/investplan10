@@ -1,5 +1,7 @@
 "use client";
 
+import { useI18n } from "@/lib/i18n/context";
+
 interface Goal {
   id: string;
   icon: string;
@@ -14,8 +16,8 @@ const GOALS: Goal[] = [
   {
     id: "retirement",
     icon: "🏖️",
-    label: "Retirement",
-    description: "Build long-term wealth for financial freedom",
+    label: "goalRetirement",
+    description: "goalRetirementDesc",
     targetYears: 10,
     suggestedMonthly: 500,
     suggestedRisk: "moderate",
@@ -23,8 +25,8 @@ const GOALS: Goal[] = [
   {
     id: "house",
     icon: "🏠",
-    label: "Buy a Home",
-    description: "Save for your dream property down payment",
+    label: "goalHouse",
+    description: "goalHouseDesc",
     targetYears: 10,
     suggestedMonthly: 800,
     suggestedRisk: "conservative",
@@ -32,8 +34,8 @@ const GOALS: Goal[] = [
   {
     id: "education",
     icon: "🎓",
-    label: "Education",
-    description: "Fund studies or your children's future",
+    label: "goalEducation",
+    description: "goalEducationDesc",
     targetYears: 10,
     suggestedMonthly: 300,
     suggestedRisk: "moderate",
@@ -41,8 +43,8 @@ const GOALS: Goal[] = [
   {
     id: "wealth",
     icon: "📈",
-    label: "Grow Wealth",
-    description: "Maximize returns with aggressive growth",
+    label: "goalWealth",
+    description: "goalWealthDesc",
     targetYears: 10,
     suggestedMonthly: 400,
     suggestedRisk: "aggressive",
@@ -50,8 +52,8 @@ const GOALS: Goal[] = [
   {
     id: "travel",
     icon: "✈️",
-    label: "Travel Fund",
-    description: "Save for incredible experiences worldwide",
+    label: "goalTravel",
+    description: "goalTravelDesc",
     targetYears: 10,
     suggestedMonthly: 200,
     suggestedRisk: "moderate",
@@ -59,8 +61,8 @@ const GOALS: Goal[] = [
   {
     id: "emergency",
     icon: "🛡️",
-    label: "Safety Net",
-    description: "Build a secure emergency fund",
+    label: "goalEmergency",
+    description: "goalEmergencyDesc",
     targetYears: 10,
     suggestedMonthly: 250,
     suggestedRisk: "conservative",
@@ -72,10 +74,14 @@ interface Props {
   selectedId?: string;
 }
 
+import { useI18n } from "@/lib/i18n/context";
+
 export default function GoalSelector({ onSelect, selectedId }: Props) {
+  const { t } = useI18n();
+
   return (
     <div>
-      <p className="text-sm font-medium text-muted mb-3">Investment Goal</p>
+      <p className="text-sm font-medium text-muted mb-3">{t("goalTitle")}</p>
       <div className="grid grid-cols-3 gap-2">
         {GOALS.map((g) => (
           <button
@@ -94,11 +100,11 @@ export default function GoalSelector({ onSelect, selectedId }: Props) {
                 selectedId === g.id ? "text-accent-green" : "text-foreground"
               }`}
             >
-              {g.label}
+              {t(g.label as any)}
             </span>
             {/* Tooltip on hover */}
             <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-card border border-card-border rounded-lg text-xs text-muted whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none shadow-lg z-10">
-              {g.description}
+              {t(g.description as any)}
             </span>
           </button>
         ))}

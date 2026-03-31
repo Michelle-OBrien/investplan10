@@ -1,6 +1,7 @@
 "use client";
 
 import { AssetRecommendation } from "@/lib/types";
+import { useI18n } from "@/lib/i18n/context";
 
 interface Props {
   assets: AssetRecommendation[];
@@ -13,6 +14,7 @@ const categoryStyles = {
 };
 
 export default function AssetList({ assets }: Props) {
+  const { t } = useI18n();
   const grouped = {
     stock: assets.filter((a) => a.category === "stock"),
     crypto: assets.filter((a) => a.category === "crypto"),
@@ -57,7 +59,7 @@ export default function AssetList({ assets }: Props) {
                           backgroundColor: asset.riskScore >= 70 ? "#fee2e2" : asset.riskScore >= 40 ? "#fef3c7" : "#dcfce7",
                         }}
                       >
-                        Risk: {asset.riskScore}%
+                        {t("textRisk")} : {asset.riskScore}%
                       </span>
                     )}
                   </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { InvestmentPlan } from "@/lib/types";
+import { useI18n } from "@/lib/i18n/context";
 
 interface Props {
   plan: InvestmentPlan;
@@ -15,6 +16,7 @@ function formatMoney(n: number): string {
 }
 
 export default function StatsCards({ plan }: Props) {
+  const { t } = useI18n();
   const profit = plan.projectedValue - plan.totalInvested;
 
   const riskScore = plan.averageRiskScore ?? 0;
@@ -22,28 +24,28 @@ export default function StatsCards({ plan }: Props) {
 
   const stats = [
     {
-      label: "Total Invested",
+      label: t("totalInvested"),
       value: formatMoney(plan.totalInvested),
       color: "text-foreground",
-      sub: "over 10 years",
+      sub: t("over10Years"),
     },
     {
-      label: "Projected Value",
+      label: t("projectedValue"),
       value: formatMoney(plan.projectedValue),
       color: "text-accent-green",
-      sub: "at year 10",
+      sub: t("atYear10"),
     },
     {
-      label: "Estimated Profit",
+      label: t("estimatedProfit"),
       value: formatMoney(profit),
       color: profit >= 0 ? "text-accent-green" : "text-accent-red",
-      sub: `${plan.totalReturn >= 0 ? "+" : ""}${plan.totalReturn}% return`,
+      sub: `${plan.totalReturn >= 0 ? "+" : ""}${plan.totalReturn}% ${t("estimatedProfit")}`,
     },
     {
-      label: "Average Risk",
+      label: t("averageRisk"),
       value: `${riskScore}%`,
       color: riskColor,
-      sub: "based on selected assets",
+      sub: t("basedOnSelectedAssets"),
     },
   ];
 

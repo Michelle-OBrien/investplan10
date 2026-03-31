@@ -12,6 +12,7 @@ import {
   Legend,
 } from "recharts";
 import { getHistory, SavedPlan } from "@/lib/history";
+import { useI18n } from "@/lib/i18n/context";
 
 function fmt(n: number) {
   return new Intl.NumberFormat("fr-FR", {
@@ -78,13 +79,15 @@ export default function PlanCompare() {
         }))
       : [];
 
+  const { t } = useI18n();
+
   if (history.length < 2) {
     return (
       <div className="bg-card border border-card-border rounded-2xl p-8 text-center">
         <div className="text-4xl mb-3">📊</div>
-        <p className="font-semibold mb-1">Not enough plans to compare</p>
+        <p className="font-semibold mb-1">{t("notEnoughPlans")}</p>
         <p className="text-sm text-muted">
-          Generate at least 2 plans to use the comparison view.
+          {t("compareHint")}
         </p>
       </div>
     );
@@ -94,7 +97,7 @@ export default function PlanCompare() {
     <div className="space-y-6">
       {/* Selectors */}
       <div className="grid grid-cols-2 gap-4">
-        {([["Plan A", idA, setIdA, "#3b82f6"], ["Plan B", idB, setIdB, "#00d4aa"]] as const).map(
+        {([[t("planA"), idA, setIdA, "#3b82f6"], [t("planB"), idB, setIdB, "#00d4aa"]] as const).map(
           ([label, value, setter, color]) => (
             <div key={label}>
               <p className="text-xs font-semibold mb-1.5" style={{ color }}>
@@ -120,7 +123,7 @@ export default function PlanCompare() {
         <>
           {/* Combined chart */}
           <div className="bg-card border border-card-border rounded-2xl p-6">
-            <h3 className="text-sm font-bold mb-4">10-Year Projection</h3>
+            <h3 className="text-sm font-bold mb-4">{t("planComparisonTitle")}</h3>
             <div className="w-full h-[260px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
