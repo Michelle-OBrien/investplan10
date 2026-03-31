@@ -1,19 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { getHistory, deletePlan, SavedPlan } from "@/lib/history";
 import DashboardStats from "@/components/DashboardStats";
 import DashboardPlanCard from "@/components/DashboardPlanCard";
 
 export default function DashboardPage() {
-  const [plans, setPlans] = useState<SavedPlan[]>([]);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setPlans(getHistory());
-    setMounted(true);
-  }, []);
+  const [plans, setPlans] = useState<SavedPlan[]>(getHistory());
+  const mounted = true;
 
   const handleDelete = (id: string) => {
     deletePlan(id);
@@ -33,7 +28,7 @@ export default function DashboardPage() {
             <p className="text-xs sm:text-sm text-muted mt-1">Dashboard — My Plans</p>
           </div>
           <Link
-            href="/"
+            href="/tool"
             className="text-sm border border-card-border rounded-lg px-4 py-2 text-muted hover:text-foreground hover:border-foreground/30 transition"
           >
             ← New plan
@@ -50,7 +45,7 @@ export default function DashboardPage() {
               Generate your first investment plan and it will appear here for review and comparison.
             </p>
             <Link
-              href="/"
+              href="/tool"
               className="inline-block bg-accent-green text-background font-bold px-6 py-3 rounded-xl hover:brightness-110 transition"
             >
               Generate a plan
