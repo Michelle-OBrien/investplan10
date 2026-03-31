@@ -85,6 +85,7 @@ const riskInfo: Record<
 };
 
 export default function RiskQuiz({ onResult, onClose }: Props) {
+  const { t } = useI18n();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<UserInput["riskTolerance"] | null>(null);

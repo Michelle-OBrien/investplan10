@@ -24,13 +24,16 @@ function formatCurrency(value: number) {
 }
 
 export default function ContributionsChart({ projections }: Props) {
-  // Build data: contributions (capital invested) vs gains (profit on top)
+  const initial = projections[0]?.totalValue || 0;
+
+  // Build data: initial capital, contributions (monthly added), gains (profit on top)
   const data = projections
     .filter((p) => p.year > 0)
     .map((p) => {
-      const gains = Math.max(0, p.totalValue - p.contributions);
+      const gains = Math.max(0, p.totalValue - initial - p.contributions);
       return {
         year: `Y${p.year}`,
+        Initial: initial,
         Contributions: p.contributions,
         Gains: gains,
         total: p.totalValue,
@@ -40,7 +43,7 @@ export default function ContributionsChart({ projections }: Props) {
   // Final year stats for the summary line
   const last = data[data.length - 1];
   const gainsPct = last
-    ? Math.round((last.Gains / last.Contributions) * 100)
+    ? Math.round((last.Gains / (last.Initial + last.Contributions)) * 100)
     : 0;
 
   return (
@@ -48,8 +51,12 @@ export default function ContributionsChart({ projections }: Props) {
       {/* Summary pill */}
       <div className="flex flex-wrap gap-3 mb-4 text-xs">
         <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-sm bg-gray-500 inline-block" />
+          <span className="text-muted">Initial capital</span>
+        </span>
+        <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-sm bg-accent-blue inline-block" />
-          <span className="text-muted">Capital invested</span>
+          <span className="text-muted">Monthly contributions</span>
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-sm bg-accent-green inline-block" />
@@ -86,6 +93,13 @@ export default function ContributionsChart({ projections }: Props) {
               }}
               formatter={(value, name) => [formatCurrency(Number(value)), name]}
               labelFormatter={(l) => `Year ${l.replace("Y", "")}`}
+            />
+            <Bar
+              dataKey="Initial"
+              stackId="a"
+              fill="#6b7280"
+              fillOpacity={0.85}
+              radius={[0, 0, 4, 4]}
             />
             <Bar
               dataKey="Contributions"

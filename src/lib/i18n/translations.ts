@@ -44,7 +44,6 @@ export const translations = {
     presetTravel: "Travel Fund",
     presetEmergency: "Safety Net",
     footerCredit: "Master IMT&E, Université Panthéon-Sorbonne",
-  },
     readyTitle: "Ready to plan your future?",
     readyDesc:
       "Enter your budget, choose your risk level and allocation, then hit generate. Our AI will create a personalized 10-year investment plan with specific assets to buy.",
@@ -70,22 +69,6 @@ export const translations = {
     // Error
     retry: "Retry",
     dismiss: "Dismiss",
-    // Dashboard
-    dashboardTitle: "Dashboard — My Plans",
-    dashboardSubtitle: "Review and compare your investment plans",
-    noPlansTitle: "No plans yet",
-    noPlansDesc: "Generate your first investment plan to start tracking progress.",
-    generatePlan: "Generate a plan",
-    // Comparison
-    notEnoughPlans: "Not enough plans to compare",
-    compareHint: "Generate at least 2 plans to use the comparison view.",
-    planA: "Plan A",
-    planB: "Plan B",
-    // Misc
-    planComparisonTitle: "10-Year Projection",
-    notSure: "Not sure?",
-    applyToForm: "Apply to form",
-    footerCredit: "Master IMT&E, Université Panthéon-Sorbonne",
   },
   fr: {
     // Header
@@ -130,7 +113,6 @@ export const translations = {
     presetTravel: "Fonds de voyage",
     presetEmergency: "Fonds d'urgence",
     footerCredit: "Master IMT&E, Université Panthéon-Sorbonne",
-  }
     readyTitle: "Prêt à planifier votre avenir ?",
     readyDesc:
       "Entrez votre budget, choisissez votre niveau de risque et votre allocation, puis cliquez sur générer. Notre IA créera un plan d'investissement personnalisé sur 10 ans avec des actifs spécifiques à acheter.",
@@ -156,22 +138,6 @@ export const translations = {
     // Error
     retry: "Réessayer",
     dismiss: "Fermer",
-    // Dashboard
-    dashboardTitle: "Tableau de bord — Mes plans",
-    dashboardSubtitle: "Consultez et comparez vos plans d'investissement",
-    noPlansTitle: "Aucun plan pour le moment",
-    noPlansDesc: "Générez votre premier plan d'investissement pour commencer à suivre vos progrès.",
-    generatePlan: "Générer un plan",
-    // Comparison
-    notEnoughPlans: "Pas assez de plans à comparer",
-    compareHint: "Générez au moins 2 plans pour utiliser la vue de comparaison.",
-    planA: "Plan A",
-    planB: "Plan B",
-    // Misc
-    planComparisonTitle: "Projection sur 10 ans",
-    notSure: "Pas sûr ?",
-    applyToForm: "Appliquer au formulaire",
-    footerCredit: "Master IMT&E, Université Panthéon-Sorbonne",
   },
 } as const;
 

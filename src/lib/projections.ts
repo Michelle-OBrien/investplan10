@@ -34,7 +34,7 @@ export function generateProjections(input: UserInput, seed: number = 42): YearPr
   let stocks = input.budget * stocksPct;
   let crypto = input.budget * cryptoPct;
   let forex = input.budget * forexPct;
-  let totalContributions = input.budget;
+  let totalContributions = 0;
 
   const projections: YearProjection[] = [
     {
@@ -43,12 +43,12 @@ export function generateProjections(input: UserInput, seed: number = 42): YearPr
       stocks,
       crypto,
       forex,
-      contributions: input.budget,
+      contributions: 0,
     },
   ];
 
   for (let y = 1; y <= 10; y++) {
-    const yearlyContrib = input.monthlyContribution * 12;
+    const yearlyContrib = input.monthlyContribution * 20;
     totalContributions += yearlyContrib;
 
     // Randomized returns with volatility

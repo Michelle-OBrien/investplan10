@@ -74,8 +74,6 @@ interface Props {
   selectedId?: string;
 }
 
-import { useI18n } from "@/lib/i18n/context";
-
 export default function GoalSelector({ onSelect, selectedId }: Props) {
   const { t } = useI18n();
 
