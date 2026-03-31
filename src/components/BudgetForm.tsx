@@ -153,7 +153,7 @@ export default function BudgetForm({ onSubmit, loading }: Props) {
               type="button"
               onClick={() => setRisk(r)}
               aria-pressed={risk === r}
-              className={`py-2 px-1.5 sm:px-3 rounded-lg border text-xs sm:text-sm font-medium capitalize transition ${
+              className={`py-2 px-1.5 sm:px-3 rounded-lg border text-xs sm:text-sm font-medium text-center capitalize transition ${
                 risk === r
                   ? r === "conservative"
                     ? "border-accent-blue bg-accent-blue/10 text-accent-blue"
