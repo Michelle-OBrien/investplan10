@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import BudgetForm from "@/components/BudgetForm";
 import ProjectionChart from "@/components/ProjectionChart";
 import AssetList from "@/components/AssetList";
 import StatsCards from "@/components/StatsCards";
 import PlanHistory from "@/components/PlanHistory";
+import HamburgerMenu from "@/components/HamburgerMenu";
 import ThemeToggle from "@/components/ThemeToggle";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import LocaleToggle from "@/components/LocaleToggle";
@@ -93,18 +93,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex items-center gap-3 sm:gap-4">
-            <Link
-              href="/dashboard"
-              className="text-xs text-muted hover:text-foreground border border-card-border rounded-lg px-3 py-1.5 transition hover:border-foreground/30"
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/compare"
-              className="hidden sm:block text-xs text-muted hover:text-foreground border border-card-border rounded-lg px-3 py-1.5 transition hover:border-foreground/30"
-            >
-              Compare
-            </Link>
+            <HamburgerMenu />
             <div className="hidden sm:flex items-center gap-2 text-xs text-muted">
               <span className="inline-block w-2 h-2 rounded-full bg-accent-green animate-pulse" />
               {t("poweredBy")}
@@ -127,7 +116,6 @@ export default function Home() {
               </p>
               <BudgetForm onSubmit={handleSubmit} loading={loading} />
             </div>
-            <PlanHistory key={historyKey} onRestore={handleRestore} />
           </div>
 
           {/* Right: Results */}
@@ -332,6 +320,11 @@ export default function Home() {
       </div>
 
       <OnboardingModal />
+
+      {/* Plan History Section */}
+      <div id="plan-history" className="max-w-6xl mx-auto px-4 py-8">
+        <PlanHistory key={historyKey} onRestore={handleRestore} />
+      </div>
 
       <footer className="border-t border-card-border mt-16 no-print">
         <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
